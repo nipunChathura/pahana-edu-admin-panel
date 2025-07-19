@@ -47,13 +47,13 @@
   <!-- ID Column -->
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let element">{{element.id}}</td>
+    <td mat-cell *matCellDef="let element">{{element.categoryId}}</td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    <td mat-cell *matCellDef="let element">{{element.categoryName}}</td>
   </ng-container>
 
   <!-- Status Column -->
@@ -61,19 +61,15 @@
     <th mat-header-cell *matHeaderCellDef>Status</th>
     <td mat-cell *matCellDef="let element"
         [ngClass]="{
-        'active-status': element.status === 'ACTIVE',
-        'inactive-status': element.status === 'INACTIVE'
-      }">{{element.status}}</td>
+        'active-status': element.categoryStatus === 'ACTIVE',
+        'inactive-status': element.categoryStatus === 'INACTIVE'
+      }">{{element.categoryStatus}}</td>
   </ng-container>
-
-  <!-- Header and Row Definitions -->
-<!--  <tr mat-header-row *matHeaderRowDef="displayedColumns.concat('action')"></tr>-->
-<!--  <tr mat-row *matRowDef="let row; columns: displayedColumns.concat('action');"></tr>-->
 
   <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
   <tr mat-row *matRowDef="let  row; columns: allColumns" [ngClass]="{
-    'active-row': row.status === 'ACTIVE',
-    'inactive-row': row.status === 'INACTIVE'
+    'active-row': row.categoryStatus === 'ACTIVE',
+    'inactive-row': row.categoryStatus === 'INACTIVE'
   }">
   </tr>
 </table>

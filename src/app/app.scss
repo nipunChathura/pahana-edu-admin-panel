@@ -8,13 +8,44 @@
   z-index: 2;
 }
 
+//.footer-bar {
+//  position: fixed;
+//  height: 40px;
+//  bottom: 0;
+//  align-items: center;
+//  justify-content: center;
+//}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 16px; /* optional */
+}
+
 .footer-bar {
-  position: fixed;
+  text-align: center;
   height: 40px;
   bottom: 0;
   align-items: center;
   justify-content: center;
 }
+
+
+//
 
 .content {
   padding: 10px;

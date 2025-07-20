@@ -1,0 +1,55 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Side Navigation -->
+  <mat-sidenav #drawer mode="side" opened>
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list id="jasmine_content">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a mat-list-item routerLink="/book" routerLinkActive="active">Books</a>
+      <a mat-list-item routerLink="/category" routerLinkActive="active">Categories</a>
+      <a mat-list-item routerLink="/customer" routerLinkActive="active">Customers</a>
+      <a mat-list-item routerLink="/promotion" routerLinkActive="active">Promotions</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main Content Area -->
+  <mat-sidenav-content>
+    <!-- Top Header Bar -->
+    <mat-toolbar color="primary" class="top-header">
+      <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>PahanaEdu Admin Panel</span>
+      <span class="spacer"></span>
+      <span class="username">Hi, {{ username }}</span>
+      <button mat-icon-button aria-label="Messages">
+        <mat-icon>mail</mat-icon>
+      </button>
+
+      <!-- Notifications Icon -->
+      <button mat-icon-button aria-label="Notifications">
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <!-- Profile Icon -->
+      <button mat-icon-button aria-label="Account">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+
+      <button mat-icon-button aria-label="Logout" (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Main Content -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Footer -->
+    <mat-toolbar color="primary" class="footer-bar">
+      <span>© 2025 PahanaEdu. All rights reserved.</span>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

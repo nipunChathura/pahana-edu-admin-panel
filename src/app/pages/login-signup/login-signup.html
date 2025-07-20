@@ -1,0 +1,54 @@
+<div class="auth-container">
+  <!-- Left Section -->
+  <div class="left-panel">
+<!--    <img src="/assets/pahana-edu-logo.jpg" class="logo" />-->
+  </div>
+
+  <!-- Right Section -->
+  <div class="right-panel">
+    <div class="branding-text">
+      <h1>Welcome to Pahana Edu</h1>
+      <p>Empowering education through books and technology</p>
+    </div>
+    <mat-card class="auth-card">
+      <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+        <mat-tab label="Login">
+          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" type="password" />
+            </mat-form-field>
+
+            <button id="loginButton" mat-raised-button color="primary" class="full-width" type="submit">Login</button>
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Sign Up">
+          <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" type="password" />
+            </mat-form-field>
+
+            <button id="signUpButton" mat-raised-button color="primary" class="full-width" type="submit">Sign Up</button>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

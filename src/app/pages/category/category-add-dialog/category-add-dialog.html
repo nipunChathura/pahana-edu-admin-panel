@@ -1,0 +1,27 @@
+<mat-toolbar style="justify-content: center;" color="primary" class="top-header">
+  <span>Add New Category</span>
+</mat-toolbar>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  <form [formGroup]="categoryForm">
+    <!-- Category Name -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category Name</mat-label>
+      <input matInput formControlName="categoryName" />
+    </mat-form-field>
+
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="categoryStatus">
+        <mat-option value="ACTIVE">Active</mat-option>
+        <mat-option value="INACTIVE">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="categoryForm.invalid">Save</button>
+</mat-dialog-actions>

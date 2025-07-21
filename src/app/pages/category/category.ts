@@ -13,6 +13,11 @@ import { MatInputModule } from '@angular/material/input';
 import { CategoryDto } from '../../services/dto/CategoryDto';
 import { CategoryApiResponse } from '../../services/response/CategoryApiResponse';
 import { CategoryService } from '../../services/category';
+import { Auth } from '../../services/auth';
+import {MatDialog} from '@angular/material/dialog';
+import {CategoryAddDialog} from './category-add-dialog/category-add-dialog';
+import {CategoryUpdateDialog} from './category-update-dialog/category-update-dialog';
+import {CategoryDeleteDialog} from './category-delete-dialog/category-delete-dialog';
 
 @Component({
   selector: 'app-category',
@@ -46,10 +51,12 @@ export class Category {
 
   dataSource = new MatTableDataSource<CategoryDto>(this.categories);
 
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzUyOTI3ODg4LCJleHAiOjE3NTMwMTQyODh9.8Hz0E32JxcDlN_kihL4J2oycT6VNRhU4kU5oKXg3zOs'; // Replace or get from auth service
+  private token ;
   private userId = 1;
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService, private auth: Auth, private dialog: MatDialog) {
+    this.token = this.auth.getToken() ?? '';
+  }
 
   ngOnInit() {
     this.categoryService.getCategories(this.userId, this.token).subscribe(data => {
@@ -77,12 +84,43 @@ export class Category {
     this.dataSource.paginator = this.paginator;
   }
 
-  onEdit(element: CategoryDto): void {
-    console.log('Edit clicked for:', element);
+  onEdit(category: any): void {
+    const dialogRef = this.dialog.open(CategoryUpdateDialog, {
+      width: '400px',
+      data: category  // Pass selected row data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCategories();
+      }
+    });
   }
 
-  onDelete(element: CategoryDto): void {
-    console.log('Delete clicked for:', element);
+  loadCategories(): void {
+    // Your actual delete logic here
+    console.log('Loading Data');
+    // Example: this.categoryService.delete(category.id).subscribe(...)
+  }
+
+  onDelete(element: any): void {
+    const dialogRef = this.dialog.open(CategoryDeleteDialog, {
+      width: '350px',
+      data: { category: element }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        // Proceed with delete
+        this.deleteCategory(element);
+      }
+    });
+  }
+
+  deleteCategory(category: any): void {
+    // Your actual delete logic here
+    console.log('Deleting:', category);
+    // Example: this.categoryService.delete(category.id).subscribe(...)
   }
 
   selectedStatus: string = '';
@@ -102,5 +140,17 @@ export class Category {
 
   applyStatusFilter() {
     this.dataSource.filter = this.selectedStatus.trim();
+  }
+
+  onAddCategory(): void {
+    const dialogRef = this.dialog.open(CategoryAddDialog, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('New category:', result);
+      }
+    });
   }
 }

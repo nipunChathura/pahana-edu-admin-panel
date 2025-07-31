@@ -7,6 +7,11 @@ import {MatOption, MatSelect} from '@angular/material/select';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
+import {CategoryDto} from '../../../services/dto/CategoryDto';
+import {CategoryRequest} from '../../../services/request/CategoryRequest';
+import {CategoryService} from '../../../services/category';
+import {Auth} from '../../../services/auth';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-category-update-dialog',
@@ -29,17 +34,23 @@ import {MatIcon} from '@angular/material/icon';
 export class CategoryUpdateDialog {
 
   categoryForm: FormGroup;
+  private token ;
+  private userId = 1;
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CategoryUpdateDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private categoryService: CategoryService,
+    private auth: Auth,
+    private snackBar: MatSnackBar,
     ) {
       this.categoryForm = this.fb.group({
         categoryId: [{ value: '', disabled: true }],
         categoryName: ['', Validators.required],
         categoryStatus: ['ACTIVE', Validators.required],
       });
+    this.token = this.auth.getToken() ?? '';
   }
 
   ngOnInit(): void {
@@ -59,7 +70,35 @@ export class CategoryUpdateDialog {
 
   onSave(): void {
     if (this.categoryForm.valid) {
-      this.dialogRef.close(this.categoryForm.value);
+      const formValues = this.categoryForm.value;
+
+      const categoryDto: CategoryDto = {
+        categoryId: this.data.categoryId,
+        categoryName: formValues.categoryName,
+        categoryStatus: formValues.categoryStatus
+      };
+
+      const request: CategoryRequest = {
+        userId: this.userId,
+        categoryId: this.data.categoryId,
+        categoryDetail: categoryDto
+      };
+
+      this.categoryService.updateCategory(request, this.token).subscribe({
+        next: (response) => {
+          if (response.status === 'success') {
+            this.snackBar.open('Category update successfully', 'Close', { duration: 3000, panelClass: ['snack-info'], horizontalPosition: 'center', verticalPosition: 'top' });
+            this.dialogRef.close(true);
+          } else {
+            this.snackBar.open('Category update Error ' + response.responseMessage, 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+            this.dialogRef.close(true);
+          }
+        },
+        error: (err) => {
+          this.snackBar.open('Failed to update category', 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+          console.error('Save error:', err);
+        }
+      });
     }
   }
 

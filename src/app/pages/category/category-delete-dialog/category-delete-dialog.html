@@ -2,9 +2,10 @@
   <span>Confirm Delete</span>
 </mat-toolbar>
 <mat-dialog-content>
-  Are you sure you want to delete this category?
+  Are you sure you want to delete
+    <strong style="color: #d32f2f;">{{ data.category.categoryName }}</strong> category?
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button color="warn" (click)="onConfirm()">Delete</button>
+  <button mat-raised-button style="border: 5px #333333" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">Delete</button>
 </mat-dialog-actions>

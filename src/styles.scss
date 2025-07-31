@@ -2,3 +2,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.snack-error {
+  background-color: #f44336 !important; /* Red */
+  color: #fff !important;
+  font-weight: bold;
+  text-align: center;
+}

@@ -11,7 +11,7 @@
 <div class="toolbar-actions">
   <mat-form-field appearance="outline" class="search-field">
     <mat-label>Search</mat-label>
-    <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Search categories..." />
+    <input matInput [(ngModel)]="searchText" autocomplete="off" (keyup)="applyFilter($event)" placeholder="Search categories..." />
     <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>

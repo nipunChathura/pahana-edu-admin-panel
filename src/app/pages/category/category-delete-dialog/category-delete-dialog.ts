@@ -25,7 +25,8 @@ export class CategoryDeleteDialog {
   constructor(
     public dialogRef: MatDialogRef<CategoryDeleteDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+  }
 
   onConfirm(): void {
     this.dialogRef.close(true);

@@ -6,18 +6,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterOutlet } from '@angular/router';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import {MatFormField, MatInput, MatSuffix} from '@angular/material/input';
-import {MatOption, MatSelect, MatSelectModule} from '@angular/material/select';
+import { MatFormField, MatInput, MatSuffix } from '@angular/material/input';
+import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CategoryDto } from '../../services/dto/CategoryDto';
 import { CategoryApiResponse } from '../../services/response/CategoryApiResponse';
 import { CategoryService } from '../../services/category';
 import { Auth } from '../../services/auth';
-import {MatDialog} from '@angular/material/dialog';
-import {CategoryAddDialog} from './category-add-dialog/category-add-dialog';
-import {CategoryUpdateDialog} from './category-update-dialog/category-update-dialog';
-import {CategoryDeleteDialog} from './category-delete-dialog/category-delete-dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { CategoryAddDialog } from './category-add-dialog/category-add-dialog';
+import { CategoryUpdateDialog } from './category-update-dialog/category-update-dialog';
+import { CategoryDeleteDialog } from './category-delete-dialog/category-delete-dialog';
+import { FormsModule } from '@angular/forms';
+import {CategoryRequest} from '../../services/request/CategoryRequest';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-category',
@@ -39,6 +42,7 @@ import {CategoryDeleteDialog} from './category-delete-dialog/category-delete-dia
     MatOption,
     MatSelect,
     MatOption,
+    FormsModule,
   ],
   templateUrl: './category.html',
   styleUrls: ['./category.scss'],
@@ -48,59 +52,101 @@ export class Category {
 
   categories!: CategoryDto[];
   response!: CategoryApiResponse;
+  searchText: string = '';
+  selectedStatus: string = '';
 
   dataSource = new MatTableDataSource<CategoryDto>(this.categories);
 
-  private token ;
+  private token;
   private userId = 1;
 
-  constructor(private categoryService: CategoryService, private auth: Auth, private dialog: MatDialog) {
+  constructor(
+    private categoryService: CategoryService,
+    private auth: Auth,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+  ) {
     this.token = this.auth.getToken() ?? '';
   }
 
-  ngOnInit() {
-    this.categoryService.getCategories(this.userId, this.token).subscribe(data => {
-      this.response = data;
-      console.log(this.response.categoryDetailsList)
-      this.categories = this.response.categoryDetailsList
-      this.dataSource = new MatTableDataSource<CategoryDto>(this.categories);
-
-      this.dataSource.filterPredicate = (data: CategoryDto, filter: string) => {
-        return filter === '' || data.categoryStatus === filter;
-      };
-
-      this.dataSource.filterPredicate = (data, filter) => {
-        // default filter on categoryName property only (example)
-        return data.categoryName.toLowerCase().includes(filter);
-      };
-
-      this.dataSource.paginator = this.paginator;
-    });
-  }
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngOnInit() {
+    this.loadCategoryTableData();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  onEdit(category: any): void {
-    const dialogRef = this.dialog.open(CategoryUpdateDialog, {
-      width: '400px',
-      data: category  // Pass selected row data
+  loadCategoryTableData() {
+    this.categoryService.getCategories(this.userId, this.token).subscribe(data => {
+      this.response = data;
+      this.categories = this.response.categoryDetailsList;
+      this.dataSource = new MatTableDataSource<CategoryDto>(this.categories);
+
+      // Combined filter for search and status
+      this.dataSource.filterPredicate = (data: CategoryDto, filter: string) => {
+        const filterObj = JSON.parse(filter);
+        const matchesText = (data.categoryName ?? '').toLowerCase().includes(filterObj.searchText);
+        const matchesStatus = filterObj.selectedStatus === '' || data.categoryStatus === filterObj.selectedStatus;
+        return matchesText && matchesStatus;
+      };
+
+      this.dataSource.paginator = this.paginator;
+      this.applyCombinedFilter(); // Apply filter after loading data
+    });
+  }
+
+  applyFilter(event: Event) {
+    this.searchText = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.applyCombinedFilter();
+  }
+
+  clearSearch() {
+    this.searchText = '';
+    this.applyCombinedFilter();
+  }
+
+  applyStatusFilter() {
+    this.applyCombinedFilter();
+  }
+
+  applyCombinedFilter() {
+    const filterValue = {
+      searchText: this.searchText.toLowerCase(),
+      selectedStatus: this.selectedStatus
+    };
+    this.dataSource.filter = JSON.stringify(filterValue);
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  onAddCategory(): void {
+    const dialogRef = this.dialog.open(CategoryAddDialog, {
+      width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadCategories();
+        this.loadCategoryTableData();
       }
     });
   }
 
-  loadCategories(): void {
-    // Your actual delete logic here
-    console.log('Loading Data');
-    // Example: this.categoryService.delete(category.id).subscribe(...)
+  onEdit(category: any): void {
+    const dialogRef = this.dialog.open(CategoryUpdateDialog, {
+      width: '400px',
+      data: category
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCategoryTableData();
+      }
+    });
   }
 
   onDelete(element: any): void {
@@ -111,46 +157,38 @@ export class Category {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // Proceed with delete
         this.deleteCategory(element);
       }
     });
   }
 
   deleteCategory(category: any): void {
-    // Your actual delete logic here
-    console.log('Deleting:', category);
-    // Example: this.categoryService.delete(category.id).subscribe(...)
-  }
+    const categoryDto: CategoryDto = {
+      categoryId: category.categoryId,
+      categoryName: category.categoryName,
+      categoryStatus: category.categoryStatus
+    };
 
-  selectedStatus: string = '';
+    const request: CategoryRequest = {
+      userId: this.userId,
+      categoryId: category.categoryId,
+      categoryDetail: categoryDto
+    };
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  clearSearch() {
-    this.dataSource.filter = '';
-  }
-
-  applyStatusFilter() {
-    this.dataSource.filter = this.selectedStatus.trim();
-  }
-
-  onAddCategory(): void {
-    const dialogRef = this.dialog.open(CategoryAddDialog, {
-      width: '400px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('New category:', result);
+    this.categoryService.deleteCategory(request, this.token).subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.snackBar.open('Category delete successfully', 'Close', { duration: 3000, panelClass: ['snack-info'], horizontalPosition: 'center', verticalPosition: 'top' });
+          this.loadCategoryTableData();
+        } else {
+          this.snackBar.open('Category delete Error ' + response.responseMessage, 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+        }
+      },
+      error: (err) => {
+        this.snackBar.open('Failed to delete category', 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+        console.error('Save error:', err);
       }
     });
   }
 }
+

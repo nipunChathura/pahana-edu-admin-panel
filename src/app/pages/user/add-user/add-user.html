@@ -1,0 +1,42 @@
+<mat-toolbar style="justify-content: center;" color="primary" class="top-header">
+  <span>Add New User</span>
+</mat-toolbar>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  <form [formGroup]="userForm">
+
+    <!-- Username -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" autocomplete="off" required/>
+      <mat-error *ngIf="userForm.get('username')?.hasError('required')">
+        Username is required.
+      </mat-error>
+      <mat-error *ngIf="userForm.get('username')?.hasError('pattern')">
+        Username must be 4–10 characters, contain letters and only letters or digits.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" autocomplete="new-password" required/>
+      <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+        Password is required.
+      </mat-error>
+      <mat-error *ngIf="userForm.get('password')?.hasError('pattern')">
+        Password must be 6–12 characters long, with at least one letter and one number.
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="userForm.invalid">
+    Save
+  </button>
+</mat-dialog-actions>
+
+

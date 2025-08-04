@@ -1,75 +1,10 @@
-//.sidenav-container {
-//  height: 100vh;
-//}
-//
-//.top-header {
-//  position: static;
-//  top: 0;
-//  z-index: 2;
-//}
-//
-////.footer-bar {
-////  position: fixed;
-////  height: 40px;
-////  bottom: 0;
-////  align-items: center;
-////  justify-content: center;
-////}
-//
-//html, body {
-//  height: 100%;
-//  margin: 0;
-//}
-//
-//mat-sidenav-container {
-//  height: 100%;
-//}
-//
-//.main-layout {
-//  display: flex;
-//  flex-direction: column;
-//  min-height: 100vh;
-//}
-//
-//.content {
-//  flex: 1;
-//  padding: 16px; /* optional */
-//}
-//
-//.footer-bar {
-//  text-align: center;
-//  height: 40px;
-//  bottom: 0;
-//  align-items: center;
-//  justify-content: center;
-//}
-//
-//
-////
-//
-//.content {
-//  padding: 10px;
-//}
-//
-//.menu-button {
-//  margin-right: 8px;
-//}
-//
-//mat-sidenav {
-//  width: 200px;
-//}
-//
-//.spacer {
-//  flex: 1 1 auto;
-//}
-
 html, body {
   height: 100%;
   margin: 0;
 }
 
 .sidenav-container {
-  height: 100vh; /* full viewport height */
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -79,24 +14,25 @@ mat-sidenav-container {
 }
 
 .top-header {
-  position: static; /* keep in document flow */
+  position: static;
   top: 0;
   z-index: 2;
   flex-shrink: 0;
-  height: 64px; /* typical toolbar height */
+  height: 64px;
 }
 
 .main-layout {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* fill vertical space below header */
-  min-height: 0; /* prevents overflow issues */
+  flex-grow: 1;
+  min-height: 0;
 }
 
 .content {
-  flex-grow: 1; /* expand to fill space */
+  flex-grow: 1;
   padding: 16px;
-  overflow-y: auto; /* scroll if content overflows */
+  overflow-y: auto;
+  min-height: 81%;
 }
 
 .footer-bar {
@@ -105,8 +41,8 @@ mat-sidenav-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* don’t shrink */
-  /* No position fixed */
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .menu-button {

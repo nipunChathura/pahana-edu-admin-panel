@@ -1,1 +1,95 @@
-<p>customer works!</p>
+<mat-toolbar color="primary" class="top-header">
+  <span>Customer Manage</span>
+  <span class="spacer"></span>
+  <button mat-raised-button (click)="onAddCustomer()">
+    <mat-icon>add</mat-icon>
+    Add Customer
+  </button>
+</mat-toolbar>
+
+<!-- Search and filter BELOW the toolbar -->
+<div class="toolbar-actions">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchText" autocomplete="off" (keyup)="applyFilter($event)" placeholder="Search categories..." />
+    <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="status-field">
+    <mat-label>Status</mat-label>
+    <mat-select [(value)]="selectedStatus" (selectionChange)="applyStatusFilter()">
+      <mat-option value="">All</mat-option>
+      <mat-option value="ACTIVE">Active</mat-option>
+      <mat-option value="INACTIVE">Inactive</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<router-outlet></router-outlet>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%; margin-top: 20px;">
+
+  <!-- Action Column FIRST -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="onEdit(element)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="onDelete(element)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>Customer Reg No</th>
+    <td mat-cell *matCellDef="let element">{{element.customerRegNo}}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{element.customerName}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="phoneNumber">
+    <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+    <td mat-cell *matCellDef="let element">{{element.phoneNumber}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let element">{{element.email}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="memberShip">
+    <th mat-header-cell *matHeaderCellDef>Membership Type</th>
+    <td mat-cell *matCellDef="let element" [ngClass]="getMembershipClass(element.membershipType)">{{element.membershipType}}</td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let element"
+        [ngClass]="{
+        'active-status': element.status === 'ACTIVE',
+        'inactive-status': element.status === 'INACTIVE'
+      }">{{element.status}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
+  <tr mat-row *matRowDef="let  row; columns: allColumns" [ngClass]="{
+    'active-row': row.status === 'ACTIVE',
+    'inactive-row': row.status === 'INACTIVE'
+  }">
+  </tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]"
+               showFirstLastButtons=""
+               aria-label="Select page of periodic elements">
+</mat-paginator>
+

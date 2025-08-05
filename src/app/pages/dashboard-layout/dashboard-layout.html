@@ -1,15 +1,103 @@
+<!--<mat-sidenav-container class="sidenav-container">-->
+<!--  &lt;!&ndash; Side Navigation &ndash;&gt;-->
+<!--  <mat-sidenav #drawer mode="side" opened>-->
+<!--    <mat-toolbar color="primary">Menu</mat-toolbar>-->
+<!--    <mat-nav-list id="jasmine_content">-->
+<!--      <a mat-list-item routerLink="/dashboard" routerLinkActive="active"-->
+<!--         [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>-->
+<!--      <a mat-list-item routerLink="/user" routerLinkActive="active">User</a>-->
+<!--      <a mat-list-item routerLink="/book" routerLinkActive="active">Books</a>-->
+<!--      <a mat-list-item routerLink="/category" routerLinkActive="active">Categories</a>-->
+<!--      <a mat-list-item routerLink="/customer" routerLinkActive="active">Customers</a>-->
+<!--      <a mat-list-item routerLink="/promotion" routerLinkActive="active">Promotions</a>-->
+<!--    </mat-nav-list>-->
+<!--  </mat-sidenav>-->
+
+<!--  &lt;!&ndash; Main Content Area &ndash;&gt;-->
+<!--  <mat-sidenav-content>-->
+<!--    &lt;!&ndash; Top Header Bar &ndash;&gt;-->
+<!--    <mat-toolbar color="primary" class="top-header">-->
+<!--      <button mat-icon-button (click)="drawer.toggle()" class="menu-button">-->
+<!--        <mat-icon>menu</mat-icon>-->
+<!--      </button>-->
+<!--      <span>PahanaEdu Admin Panel</span>-->
+<!--      <span class="spacer"></span>-->
+<!--      <span class="username">Hi, {{ username }}</span>-->
+<!--      <button mat-icon-button aria-label="Messages">-->
+<!--        <mat-icon>mail</mat-icon>-->
+<!--      </button>-->
+
+<!--      &lt;!&ndash; Notifications Icon &ndash;&gt;-->
+<!--      <button mat-icon-button aria-label="Notifications">-->
+<!--        <mat-icon>notifications</mat-icon>-->
+<!--      </button>-->
+
+<!--      &lt;!&ndash; Profile Icon &ndash;&gt;-->
+<!--      <button mat-icon-button aria-label="Account">-->
+<!--        <mat-icon>account_circle</mat-icon>-->
+<!--      </button>-->
+
+<!--      <button mat-icon-button aria-label="Logout" (click)="onLogout()">-->
+<!--        <mat-icon>logout</mat-icon>-->
+<!--      </button>-->
+<!--    </mat-toolbar>-->
+
+<!--    &lt;!&ndash; Main Content &ndash;&gt;-->
+<!--    <div class="content">-->
+<!--      <router-outlet></router-outlet>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Footer &ndash;&gt;-->
+<!--    <mat-toolbar color="primary" class="footer-bar">-->
+<!--      <span>© 2025 PahanaEdu. All rights reserved.</span>-->
+<!--    </mat-toolbar>-->
+<!--  </mat-sidenav-content>-->
+<!--</mat-sidenav-container>-->
+
+
 <mat-sidenav-container class="sidenav-container">
   <!-- Side Navigation -->
   <mat-sidenav #drawer mode="side" opened>
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list id="jasmine_content">
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active"
-         [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-      <a mat-list-item routerLink="/user" routerLinkActive="active">User</a>
-      <a mat-list-item routerLink="/book" routerLinkActive="active">Books</a>
-      <a mat-list-item routerLink="/category" routerLinkActive="active">Categories</a>
-      <a mat-list-item routerLink="/customer" routerLinkActive="active">Customers</a>
-      <a mat-list-item routerLink="/promotion" routerLinkActive="active">Promotions</a>
+         [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>dashboard</mat-icon>
+        <span class="menu-label">Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/user" routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>person</mat-icon>
+        <span class="menu-label">User</span>
+      </a>
+
+      <!-- Books Section with Sub-Menu -->
+      <a mat-list-item (click)="showBookSubMenu = !showBookSubMenu">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text">
+        <mat-icon>menu_book</mat-icon>
+        <span >Books</span>
+        <span class="spacer"></span>
+        <mat-icon class="expand-icon">{{ showBookSubMenu ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </span>
+        </a>
+      <div *ngIf="showBookSubMenu" class="sub-menu">
+        <a mat-list-item routerLink="/book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">All Books</a>
+        <a mat-list-item routerLink="/add-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Add Book</a>
+        <a mat-list-item routerLink="/update-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Update Book</a>
+      </div>
+
+      <a mat-list-item routerLink="/category" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>category</mat-icon>
+        <span class="menu-label">Categories</span>
+      </a>
+      <a mat-list-item routerLink="/customer" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>people</mat-icon>
+        <span class="menu-label">Customers</span>
+      </a>
+      <a mat-list-item routerLink="/promotion" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>local_offer</mat-icon>
+        <span class="menu-label">Promotions</span>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -26,17 +114,12 @@
       <button mat-icon-button aria-label="Messages">
         <mat-icon>mail</mat-icon>
       </button>
-
-      <!-- Notifications Icon -->
       <button mat-icon-button aria-label="Notifications">
         <mat-icon>notifications</mat-icon>
       </button>
-
-      <!-- Profile Icon -->
       <button mat-icon-button aria-label="Account">
         <mat-icon>account_circle</mat-icon>
       </button>
-
       <button mat-icon-button aria-label="Logout" (click)="onLogout()">
         <mat-icon>logout</mat-icon>
       </button>

@@ -8,6 +8,7 @@ import { AddBook } from './pages/book/add-book/add-book';
 import { User } from './pages/user/user';
 import { LoginSignup } from './pages/login-signup/login-signup';
 import {DashboardLayout} from './pages/dashboard-layout/dashboard-layout';
+import {UpdateBook} from './pages/book/update-book/update-book';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -22,9 +23,11 @@ export const routes: Routes = [
         path: 'book',
         component: Book,
         children: [
-          { path: 'add-book', component: AddBook }
+          // { path: 'add-book', component: AddBook }
         ]
       },
+      { path: 'add-book', component: AddBook },
+      { path: 'update-book', component: UpdateBook },
       { path: 'category', component: Category },
       { path: 'customer', component: Customer },
       { path: 'promotion', component: Promotion }

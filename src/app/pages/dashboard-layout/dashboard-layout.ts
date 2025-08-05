@@ -16,6 +16,7 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/route
 })
 export class DashboardLayout {
   username: string = 'Nipun';
+  showBookSubMenu = false;
   constructor(private router: Router) {}
 
   onLogout() {

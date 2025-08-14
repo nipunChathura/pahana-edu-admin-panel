@@ -26,6 +26,13 @@ export class CategoryService {
     return this.http.get<CategoryApiResponse>(`${this.baseUrl}`, { headers, params });
   }
 
+  getCategoriesByStatus(userId: number, status: string, token: string): Observable<CategoryApiResponse> {
+    const headers = this.createHeaders(token);
+    const params = new HttpParams().set('userId', userId.toString()).set('status', status);
+
+    return this.http.get<CategoryApiResponse>(`${this.baseUrl}/status`, { headers, params });
+  }
+
   saveCategory(request: CategoryRequest, token: string): Observable<CategoryApiResponse> {
     const headers = this.createHeaders(token);
     return this.http.post<CategoryApiResponse>(`${this.baseUrl}/add`, request, { headers });

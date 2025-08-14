@@ -137,15 +137,12 @@ export class Book {
 
   onEdit(bookDto: any): void {
     const dialogRef = this.dialog.open(ViewBookDetail, {
-      width: '1200px',
-      height: '800px',
-      data: bookDto
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadBookTableData();
-      }
+      maxWidth: '90vw',
+      minWidth: '300px',
+      width: 'auto',
+      height: 'auto',
+      data: { book: bookDto },
+      autoFocus: false
     });
   }
 

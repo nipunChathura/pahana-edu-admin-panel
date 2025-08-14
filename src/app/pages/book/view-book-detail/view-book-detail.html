@@ -1,33 +1,43 @@
-<mat-toolbar style="justify-content: center;" color="primary" class="top-header">
-  <span>{{bookName}} Book Details</span>
-</mat-toolbar>
+<mat-card class="book-details-card">
+  <!-- Toolbar with close button -->
+  <mat-toolbar color="primary">
+    <span>Book Details</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="onClose()" aria-label="Close" style="color: #ff80ab;">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
 
-<mat-dialog-content>
-  <form [formGroup]="categoryForm">
-    <!-- ID Field -->
-    <mat-form-field class="full-width">
-      <mat-label>Category ID</mat-label>
-      <input matInput formControlName="categoryId" />
-    </mat-form-field>
+  <!-- Flex container: left image, right content -->
+  <div class="book-details-container">
+    <!-- Left: Image -->
+    <div class="image-container">
+      <img [src]="imageUrl" alt="Book Image">
+    </div>
 
-    <!-- Name Field -->
-    <mat-form-field class="full-width">
-      <mat-label>Category Name</mat-label>
-      <input matInput formControlName="categoryName" />
-    </mat-form-field>
+    <!-- Right: Content -->
+    <div class="content-container">
+      <h2>{{ book.name }}</h2>
+      <p><strong>Author:</strong> {{ book.author }}</p>
+      <p><strong>Category:</strong> {{ book.categoryName }}</p>
+      <p><strong>Language:</strong> {{ book.language }}</p>
+      <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+      <p><strong>Publisher:</strong> {{ book.publisher }}</p>
+      <p><strong>Publish Date:</strong> {{ formattedPublishDate }}</p>
+      <p><strong>Price:</strong> {{ book.price | currency }}</p>
+      <p><strong>Quantity:</strong> {{ book.quantity }}</p>
 
-    <!-- Status Dropdown -->
-    <mat-form-field class="full-width">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="categoryStatus">
-        <mat-option value="ACTIVE">Active</mat-option>
-        <mat-option value="INACTIVE">Inactive</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </form>
-</mat-dialog-content>
+      <p class="description"><strong>Description:</strong> {{ book.description }}</p>
 
-<mat-dialog-actions align="end">
-  <button mat-raised-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="categoryForm.invalid">Update</button>
-</mat-dialog-actions>
+      <div *ngIf="book.awardList?.length">
+        <h3>Awards:</h3>
+        <ul>
+          <li *ngFor="let award of book.awardList">
+            <strong>{{ award.awardName }}</strong>
+            <span *ngIf="award.awardDescription">- {{ award.awardDescription }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</mat-card>

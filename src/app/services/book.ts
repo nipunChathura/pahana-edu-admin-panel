@@ -21,6 +21,18 @@ export class BookService {
     });
   }
 
+  getBookById(userId: number, bookId: number, token: string): Observable<BookResponse> {
+    const headers = this.createHeaders(token);
+
+    const params = new HttpParams()
+      .set('userId', userId.toString())
+      .set('bookId', bookId.toString());
+
+    const url = `${this.baseUrl}/get`; // <-- corrected
+
+    return this.http.get<BookResponse>(url, { headers, params });
+  }
+
   getBooks(userId: number, token: string): Observable<BookResponse> {
     const headers = this.createHeaders(token);
     const params = new HttpParams().set('userId', userId.toString());

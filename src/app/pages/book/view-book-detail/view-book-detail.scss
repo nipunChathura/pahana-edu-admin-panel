@@ -79,6 +79,10 @@
     }
   }
 
+  .spacer {
+    flex: 1 1 auto;
+  }
+
   // Scrollbar for dark theme
   &::-webkit-scrollbar {
     width: 8px;

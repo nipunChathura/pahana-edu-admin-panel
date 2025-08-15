@@ -149,7 +149,12 @@ export class AddBook {
           if (res.status === 'success') {
             this.saveBook(res.imageUrl, formValue, awardList, this.token);
           } else {
-            this.snackBar.open(`Image upload error: ${res.responseMessage}`, 'Close', { duration: 3000, panelClass: ['snack-error'] });
+            this.snackBar.open(`Image upload error: ${res.responseMessage}`, 'Close', {
+              duration: 3000,
+              panelClass: ['snack-error'],
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            });
           }
         },
         error: err => console.error('Image upload failed', err)
@@ -192,10 +197,20 @@ export class AddBook {
     this.bookService.saveBook(bookRequest, token).subscribe({
       next: response => {
         if (response.status === 'success') {
-          this.snackBar.open('Book saved successfully', 'Close', { duration: 3000, panelClass: ['snack-info'] });
+          this.snackBar.open('Book saved successfully', 'Close', {
+            duration: 3000,
+            panelClass: ['snack-info'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
           this.onCancel();
         } else {
-          this.snackBar.open(`Book save error: ${response.responseMessage}`, 'Close', { duration: 3000, panelClass: ['snack-error'] });
+          this.snackBar.open(`Book save error: ${response.responseMessage}`, 'Close', {
+            duration: 3000,
+            panelClass: ['snack-error'],
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          });
         }
       },
       error: err => console.error('Error saving book', err)

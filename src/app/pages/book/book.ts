@@ -28,6 +28,8 @@ import {MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/inp
 import {FormsModule} from '@angular/forms';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {ViewBookDetail} from './view-book-detail/view-book-detail';
+import {DeleteBook} from './delete-book/delete-book';
+import {BookRequest} from '../../services/request/BookRequest';
 
 @Component({
   selector: 'app-book',
@@ -123,18 +125,6 @@ export class Book {
     }
   }
 
-  onAddBook(): void {
-    const dialogRef = this.dialog.open(CategoryAddDialog, {
-      width: '400px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadBookTableData();
-      }
-    });
-  }
-
   onEdit(bookDto: any): void {
     const dialogRef = this.dialog.open(ViewBookDetail, {
       maxWidth: '90vw',
@@ -147,44 +137,40 @@ export class Book {
   }
 
   onDelete(element: any): void {
-    const dialogRef = this.dialog.open(CategoryDeleteDialog, {
+    console.log(element);
+    const dialogRef = this.dialog.open(DeleteBook, {
       width: '350px',
-      data: { category: element }
+      data: element
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.deleteCategory(element);
+        this.deleteBook(element);
       }
     });
   }
 
-  deleteCategory(category: any): void {
-    const categoryDto: CategoryDto = {
-      categoryId: category.categoryId,
-      categoryName: category.categoryName,
-      categoryStatus: category.categoryStatus
-    };
+  deleteBook(bookDto: BookDto): void {
 
-    const request: CategoryRequest = {
+    const request: BookRequest = {
       userId: this.userId,
-      categoryId: category.categoryId,
-      categoryDetail: categoryDto
+      bookId: bookDto.bookId,
+      bookDetail: bookDto
     };
 
-    // this.bookService.deleteCategory(request, this.token).subscribe({
-    //   next: (response) => {
-    //     if (response.status === 'success') {
-    //       this.snackBar.open('Category delete successfully', 'Close', { duration: 3000, panelClass: ['snack-info'], horizontalPosition: 'center', verticalPosition: 'top' });
-    //       this.loadBookTableData();
-    //     } else {
-    //       this.snackBar.open('Category delete Error ' + response.responseMessage, 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
-    //     }
-    //   },
-    //   error: (err) => {
-    //     this.snackBar.open('Failed to delete category', 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
-    //     console.error('Save error:', err);
-    //   }
-    // });
+    this.bookService.deleteBook(request, this.token).subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          this.snackBar.open('Book delete successfully', 'Close', { duration: 3000, panelClass: ['snack-info'], horizontalPosition: 'center', verticalPosition: 'top' });
+          this.loadBookTableData();
+        } else {
+          this.snackBar.open('Book delete Error ' + response.responseMessage, 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+        }
+      },
+      error: (err) => {
+        this.snackBar.open('Failed to delete book', 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+        console.error('Save error:', err);
+      }
+    });
   }
 }

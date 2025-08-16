@@ -1,1 +1,13 @@
-<p>delete-promotion works!</p>
+<mat-toolbar style="justify-content: center;" color="primary" class="top-header">
+  <span>Confirm Delete</span>
+</mat-toolbar>
+
+<mat-dialog-content>
+  Are you sure you want to delete
+  <strong style="color: #d32f2f;">{{ data.promotionName }}</strong> Promotion?
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button style="border: 1px solid #333333" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">Delete</button>
+</mat-dialog-actions>

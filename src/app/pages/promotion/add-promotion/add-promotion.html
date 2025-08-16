@@ -1,0 +1,218 @@
+<!--<mat-toolbar color="primary">-->
+<!--  <span>Add Promotion</span>-->
+<!--</mat-toolbar>-->
+
+<!--<form [formGroup]="promotionForm" (ngSubmit)="onSave()" class="form-grid">-->
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Promotion Name</mat-label>-->
+<!--    <input matInput formControlName="promotionName" required>-->
+<!--  </mat-form-field>-->
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Priority</mat-label>-->
+<!--    <mat-select formControlName="priority" required>-->
+<!--      <mat-option *ngFor="let p of [1,2,3,4]" [value]="p">{{ p }}</mat-option>-->
+<!--    </mat-select>-->
+<!--  </mat-form-field>-->
+
+<!--  <div>-->
+<!--    <mat-form-field>-->
+<!--      <mat-label>Promotion Start date</mat-label>-->
+<!--      <input matInput [matDatepicker]="datepicker" [(ngModel)]="startValue">-->
+<!--      <mat-datepicker #datepicker/>-->
+<!--      <mat-datepicker-toggle [for]="datepicker" matSuffix/>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field>-->
+<!--      <mat-label>Promotion Start time</mat-label>-->
+<!--      <input matInput-->
+<!--             formControlName="promotionStartDate"-->
+<!--             [matTimepicker]="timepicker"-->
+<!--             [(ngModel)]="startValue"-->
+<!--             [ngModelOptions]="{updateOn: 'blur'}">-->
+<!--      <mat-timepicker #timepicker/>-->
+<!--      <mat-timepicker-toggle [for]="timepicker" matSuffix/>-->
+<!--    </mat-form-field>-->
+
+<!--    <p>Value: {{startValue}}</p>-->
+<!--  </div>-->
+
+<!--  <div>-->
+<!--    <mat-form-field>-->
+<!--      <mat-label>Promotion End date</mat-label>-->
+<!--      <input matInput [matDatepicker]="datepicker" [(ngModel)]="startValue">-->
+<!--      <mat-datepicker #datepicker/>-->
+<!--      <mat-datepicker-toggle [for]="datepicker" matSuffix/>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field>-->
+<!--      <mat-label>Promotion End time</mat-label>-->
+<!--      <input matInput-->
+<!--             formControlName="promotionStartDate"-->
+<!--             [matTimepicker]="timepicker"-->
+<!--             [(ngModel)]="startValue"-->
+<!--             [ngModelOptions]="{updateOn: 'blur'}">-->
+<!--      <mat-timepicker #timepicker/>-->
+<!--      <mat-timepicker-toggle [for]="timepicker" matSuffix/>-->
+<!--    </mat-form-field>-->
+
+<!--    <p>Value: {{endValue}}</p>-->
+<!--  </div>-->
+
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Promotion Type</mat-label>-->
+<!--    <mat-select formControlName="promotionType" required>-->
+<!--      <mat-option value="FLAT">FLAT</mat-option>-->
+<!--      <mat-option value="PERCENTAGE">PERCENTAGE</mat-option>-->
+<!--    </mat-select>-->
+<!--  </mat-form-field>-->
+
+<!--  <mat-form-field appearance="outline">-->
+<!--    <mat-label>Promotion Price</mat-label>-->
+<!--    <input matInput type="number" formControlName="promotionPrice" required>-->
+<!--  </mat-form-field>-->
+
+<!--  &lt;!&ndash; Selected Books Chips &ndash;&gt;-->
+<!--  <mat-form-field appearance="outline" class="full-width">-->
+<!--    <mat-label>Selected Books</mat-label>-->
+<!--    <mat-chip-grid #chipGrid>-->
+<!--      <mat-chip-row *ngFor="let book of selectedBooks"-->
+<!--                    [removable]="true"-->
+<!--                    (removed)="removeBook(book)">-->
+<!--        {{ book.name }}-->
+<!--        <mat-icon matChipRemove>cancel</mat-icon>-->
+<!--      </mat-chip-row>-->
+
+<!--      <input-->
+<!--        placeholder="Search books..."-->
+<!--        [matAutocomplete]="auto"-->
+<!--        [formControl]="bookCtrl"-->
+<!--        [matChipInputFor]="chipGrid"-->
+<!--        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
+<!--        (matChipInputTokenEnd)="addBook($event)">-->
+<!--    </mat-chip-grid>-->
+
+<!--    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedBook($event)">-->
+<!--      <mat-option *ngFor="let book of filteredBooks | async" [value]="book.name">-->
+<!--        {{ book.name }}-->
+<!--      </mat-option>-->
+<!--    </mat-autocomplete>-->
+<!--  </mat-form-field>-->
+
+<!--  <div class="button-group">-->
+<!--    <button mat-raised-button color="primary" type="submit" style="width:120px">Save</button>-->
+<!--    <button mat-raised-button color="warn" type="button" style="width:120px" (click)="onCancel()">Cancel</button>-->
+<!--  </div>-->
+<!--</form>-->
+
+
+<mat-toolbar color="primary">
+  <span>Add Promotion</span>
+</mat-toolbar>
+
+<form [formGroup]="promotionForm" (ngSubmit)="onSave()" class="form-grid">
+
+  <!-- Promotion Name -->
+  <mat-form-field appearance="outline">
+    <mat-label>Promotion Name</mat-label>
+    <input matInput formControlName="promotionName" required>
+  </mat-form-field>
+
+  <!-- Priority -->
+  <mat-form-field appearance="outline">
+    <mat-label>Priority</mat-label>
+    <mat-select formControlName="priority" required>
+      <mat-option *ngFor="let p of [1,2,3,4]" [value]="p">{{ p }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Start Date & Time -->
+  <div class="date-time-group">
+    <mat-form-field appearance="outline">
+      <mat-label>Promotion Start Date</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="promotionStartDate" [min]="minStartDate">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Start Time -->
+    <mat-form-field appearance="outline">
+      <mat-label>Promotion Start Time</mat-label>
+      <input matInput [matTimepicker]="startTimePicker" formControlName="promotionStartTime">
+      <mat-timepicker-toggle matSuffix [for]="startTimePicker"></mat-timepicker-toggle>
+      <mat-timepicker #startTimePicker></mat-timepicker>
+    </mat-form-field>
+  </div>
+
+  <!-- End Date & Time -->
+  <div class="date-time-group">
+    <mat-form-field appearance="outline">
+      <mat-label>Promotion End Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" formControlName="promotionEndDate" [min]="minEndDate">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- End Time -->
+    <mat-form-field appearance="outline">
+      <mat-label>Promotion End Time</mat-label>
+      <input matInput [matTimepicker]="endTimePicker" formControlName="promotionEndTime">
+      <mat-timepicker-toggle matSuffix [for]="endTimePicker"></mat-timepicker-toggle>
+      <mat-timepicker #endTimePicker></mat-timepicker>
+    </mat-form-field>
+  </div>
+
+  <!-- Promotion Type -->
+  <mat-form-field appearance="outline">
+    <mat-label>Promotion Type</mat-label>
+    <mat-select formControlName="promotionType" required>
+      <mat-option value="FLAT">FLAT</mat-option>
+      <mat-option value="PERCENTAGE">PERCENTAGE</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Promotion Price -->
+  <mat-form-field appearance="outline">
+    <mat-label>Promotion Price</mat-label>
+    <input matInput type="number" formControlName="promotionPrice" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Selected Books</mat-label>
+
+    <!-- Chips on top -->
+    <mat-chip-grid #chipGrid>
+      <mat-chip-row *ngFor="let book of selectedBooks" [removable]="true" (removed)="removeBook(book)">
+        {{ book.name }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip-row>
+    </mat-chip-grid>
+
+    <!-- Input below -->
+    <input
+      matInput
+      style="margin-top: 10px"
+      placeholder="Search books..."
+      [formControl]="bookCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipGrid"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="addBook($event)"
+    >
+
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedBook($event)">
+      <mat-option *ngFor="let book of filteredBooks | async" [value]="book.name">
+        {{ book.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <span class="spacer"></span>
+
+  <!-- Buttons -->
+  <div class="button-group">
+    <button mat-raised-button color="primary" type="submit" style="width:120px">Save</button>
+    <button mat-raised-button color="warn" type="button" style="width:120px" (click)="onCancel()">Cancel</button>
+  </div>
+
+</form>

@@ -11,6 +11,7 @@ import {DashboardLayout} from './pages/dashboard-layout/dashboard-layout';
 import {UpdateBook} from './pages/book/update-book/update-book';
 import {AddPromotion} from './pages/promotion/add-promotion/add-promotion';
 import {UpdatePromotion} from './pages/promotion/update-promotion/update-promotion';
+import {OrderComponent} from './pages/order/order.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -32,6 +33,7 @@ export const routes: Routes = [
       { path: 'update-book', component: UpdateBook },
       { path: 'category', component: Category },
       { path: 'customer', component: Customer },
+      { path: 'order', component: OrderComponent },
       { path: 'promotion', component: Promotion },
       { path: 'add-promotion', component: AddPromotion },
       { path: 'update-promotion', component: UpdatePromotion }

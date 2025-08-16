@@ -1,0 +1,141 @@
+<mat-toolbar color="primary" class="top-header">
+  <span>Orders Manage</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<!-- Search Field -->
+<div class="toolbar-actions">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchText" (keyup)="applyFilter($event)" placeholder="Search customer data..." />
+    <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Orders Table -->
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 full-width-table">
+
+  <!-- Columns -->
+  <ng-container matColumnDef="orderId">
+    <th mat-header-cell *matHeaderCellDef> Order ID </th>
+    <td mat-cell *matCellDef="let order"> {{order.orderId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="customerName">
+    <th mat-header-cell *matHeaderCellDef> Customer </th>
+    <td mat-cell *matCellDef="let order"> {{order.customer.customerName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="orderDate">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let order"> {{order.orderDate | date:'short'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="paidAmount">
+    <th mat-header-cell *matHeaderCellDef> Paid </th>
+    <td mat-cell *matCellDef="let order"> {{order.paidAmount | currency:'LKR '}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="paymentType">
+    <th mat-header-cell *matHeaderCellDef> Payment </th>
+    <td mat-cell *matCellDef="let order"> {{order.paymentType}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <td mat-cell *matCellDef="let order"> {{order.customer.status}} </td>
+  </ng-container>
+
+  <!-- Expand Column -->
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let order">
+      <button mat-icon-button (click)="toggleRow(order)">
+        <mat-icon>{{expandedOrder === order ? 'expand_less' : 'expand_more'}}</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Header Row -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+  <!-- Data Row -->
+  <tr mat-row *matRowDef="let order; columns: displayedColumns;" class="order-row"></tr>
+
+  <!-- Detail Row -->
+  <ng-container matColumnDef="detail">
+    <td mat-cell *matCellDef="let order" [attr.colspan]="displayedColumns.length">
+      <div class="expanded-content">
+        <!-- Placeholder -->
+        <div *ngIf="expandedOrder !== order" class="placeholder-text">
+          Show Order Details
+        </div>
+
+        <!-- Expanded Details -->
+        <div *ngIf="expandedOrder === order">
+          <h3 class="section-title">Order Details</h3>
+          <div class="order-details-grid-two-columns">
+            <div><b>Customer Reg No:</b> {{order.customer.customerRegNo}}</div>
+            <div><b>Email:</b> {{order.customer.email}}</div>
+            <div><b>Phone:</b> {{order.customer.phoneNumber}}</div>
+            <div><b>Membership:</b> {{order.customer.membershipType}}</div>
+            <div><b>Total Amount:</b> {{order.totalAmount | currency:'LKR '}}</div>
+            <div><b>Discount:</b> {{order.discountAmount | currency:'LKR '}}</div>
+            <div><b>Paid:</b> {{order.paidAmount | currency:'LKR '}}</div>
+            <div><b>Payment Type:</b> {{order.paymentType}}</div>
+          </div>
+
+          <h4 class="section-title">Books in Order</h4>
+          <table mat-table [dataSource]="order.orderDetailDtos" class="inner-table">
+
+            <ng-container matColumnDef="bookName">
+              <th mat-header-cell *matHeaderCellDef> Book </th>
+              <td mat-cell *matCellDef="let item"> {{item.book.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="author">
+              <th mat-header-cell *matHeaderCellDef> Author </th>
+              <td mat-cell *matCellDef="let item"> {{item.book.author}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="itemPrice">
+              <th mat-header-cell *matHeaderCellDef> Price </th>
+              <td mat-cell *matCellDef="let item"> {{item.itemPrice | currency:'LKR '}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="itemQuantity">
+              <th mat-header-cell *matHeaderCellDef> Qty </th>
+              <td mat-cell *matCellDef="let item"> {{item.itemQuantity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discountPrice">
+              <th mat-header-cell *matHeaderCellDef> After Discount </th>
+              <td mat-cell *matCellDef="let item"> {{item.discountPrice | currency:'LKR '}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="promotion">
+              <th mat-header-cell *matHeaderCellDef> Promotion </th>
+              <td mat-cell *matCellDef="let item">
+                <ng-container *ngIf="item.promotion">
+                  {{item.promotion.promotionName}} ({{item.promotion.promotionType}}) - {{item.promotion.promotionPrice | currency:'LKR '}}
+                </ng-container>
+                <ng-container *ngIf="!item.promotion">N/A</ng-container>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="innerDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: innerDisplayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Detail Row Render -->
+  <tr mat-row *matRowDef="let order; columns: ['detail']" class="detail-row"></tr>
+</table>
+
+<!-- Paginator -->
+<mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>

@@ -1,0 +1,43 @@
+<div class="dashboard">
+  <!-- Daily Income -->
+  <div class="card">
+    <h3 class="chartTitle">Daily Income</h3>
+    <apx-chart
+      [series]="incomeChart.series"
+      [chart]="incomeChart.chart || {}"
+      [xaxis]="incomeChart.xaxis || {}"
+      [yaxis]="incomeChart.yaxis || {}"
+      [tooltip]="incomeChart.tooltip || {}">
+    </apx-chart>
+  </div>
+
+  <!-- Membership -->
+  <div class="card">
+    <h3 class="chartTitle">Customers by Membership</h3>
+    <apx-chart
+      [series]="membershipChart.series"
+      [chart]="membershipChart.chart || { type: 'line' }"
+      [xaxis]="membershipChart.xaxis || {}">
+    </apx-chart>
+  </div>
+
+  <!-- Orders -->
+  <div class="card">
+    <h3 class="chartTitle">Daily Orders</h3>
+    <apx-chart
+      [series]="orderChart.series"
+      [chart]="orderChart.chart"
+      [xaxis]="orderChart.xaxis || {}">
+    </apx-chart>
+  </div>
+
+  <!-- Popular Books -->
+  <div class="card">
+    <h3 class="chartTitle">Popular Books Stock</h3>
+    <apx-chart
+      [series]="bookChart.series"
+      [chart]="bookChart.chart"
+      [labels]="bookChart.labels || []">
+    </apx-chart>
+  </div>
+</div>

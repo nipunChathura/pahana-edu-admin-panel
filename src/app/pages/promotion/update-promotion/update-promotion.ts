@@ -6,7 +6,7 @@ import {
   MatAutocompleteTrigger,
   MatOption
 } from '@angular/material/autocomplete';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRemove, MatChipRow} from '@angular/material/chips';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
@@ -54,7 +54,8 @@ import {CategoryDto} from '../../../services/dto/CategoryDto';
     MatTimepickerToggle,
     MatToolbar,
     NgForOf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconButton
   ],
   templateUrl: './update-promotion.html',
   styleUrl: './update-promotion.scss'
@@ -69,7 +70,7 @@ export class UpdatePromotion {
 
   selectedPromotion!: PromotionDto | null;
 
-  userId = 1;
+  userId ;
   token = '';
 
   minStartDate: Date = new Date();
@@ -81,6 +82,8 @@ export class UpdatePromotion {
   filteredBooks: Observable<BookDto[]> = of([]);
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
+  searchText: string = '';
+
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
@@ -89,6 +92,7 @@ export class UpdatePromotion {
     private snackBar: MatSnackBar
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {
@@ -104,9 +108,14 @@ export class UpdatePromotion {
       promotionPrice: [{ value: '', disabled: true }, Validators.required],   // read-only
       bookIds: [[]]
     });
-    this.promotionForm.disable({ onlySelf: false, emitEvent: false }); // disable all initially except search
+    this.promotionForm.disable({ onlySelf: false, emitEvent: false });
     this.loadAllPromotion();
     this.loadBooks();
+  }
+
+  clearSearch() {
+    this.searchText = '';
+    this.onCancel();
   }
 
   displayPromotionTitle(promo?: PromotionDto): string {

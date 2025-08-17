@@ -81,7 +81,7 @@ import {PromotionRequest} from '../../../services/request/PromotionRequest';
 export class AddPromotion implements OnInit {
   promotionForm!: FormGroup;
 
-  userId = 1;
+  userId ;
   token = '';
 
   minStartDate: Date = new Date();
@@ -99,6 +99,7 @@ export class AddPromotion implements OnInit {
               private auth: Auth,
               private snackBar: MatSnackBar) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {

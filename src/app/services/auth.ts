@@ -17,6 +17,8 @@ export class Auth {
     return this.http.post<AuthResponse>(this.loginUrl, { username, password }).pipe(
       tap(response => {
         localStorage.setItem('authToken', response.token);
+        localStorage.setItem('username', response.username);
+        localStorage.setItem('userId', String(response.userId));
       })
     );
   }

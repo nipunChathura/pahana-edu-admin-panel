@@ -2,7 +2,7 @@
   width: 800px;
   max-height: 80vh;
   padding: 16px;
-  background-color: #1e0a2e; // deep violet background
+  background-color: #2b2b2c; // deep violet background
   color: #f1e4ff; // soft light text for readability
   overflow-y: auto;
   border-radius: 8px;
@@ -20,7 +20,7 @@
         border-radius: 8px;
         margin-top: 10px;
         margin-left: 10px;
-        border: 2px solid #d500f9; // magenta border
+        border: 2px solid #7a1fa2; // magenta border
         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       }
     }
@@ -34,7 +34,7 @@
         margin: 10px 0 12px 0;
         font-size: 1.8rem;
         font-weight: 700;
-        color: #ff80ab; // soft magenta title
+        color: #ffffff; // soft magenta title
       }
 
       p {
@@ -45,7 +45,7 @@
 
         strong {
           font-weight: 600;
-          color: #ff80ab; // highlight label in magenta
+          color: #ffffff; // highlight label in magenta
           min-width: 120px;
           display: inline-block;
         }
@@ -55,7 +55,7 @@
         margin-top: 12px;
         font-size: 0.95rem;
         line-height: 1.5;
-        color: #e0b3ff; // slightly lighter violet for description
+        color: #ffffff; // slightly lighter violet for description
         white-space: pre-wrap;
       }
 
@@ -64,7 +64,7 @@
         margin-bottom: 8px;
         font-size: 1.2rem;
         font-weight: 600;
-        color: #ff80ab; // magenta headings
+        color: #ffffff; // magenta headings
       }
 
       ul {
@@ -92,10 +92,10 @@
     border-radius: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #d500f9; // magenta scrollbar
+    background: #52156e; // magenta scrollbar
     border-radius: 4px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: #ff80ab;
+    background: #f10606;
   }
 }

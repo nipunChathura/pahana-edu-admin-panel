@@ -35,7 +35,7 @@ export class CategoryUpdateDialog {
 
   categoryForm: FormGroup;
   private token ;
-  private userId = 1;
+  private userId;
 
   constructor(
     private fb: FormBuilder,
@@ -51,11 +51,11 @@ export class CategoryUpdateDialog {
         categoryStatus: ['ACTIVE', Validators.required],
       });
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {
     if (this.data) {
-      // Patch values but keep categoryId disabled
       this.categoryForm.patchValue({
         categoryId: this.data.categoryId,
         categoryName: this.data.categoryName,

@@ -2,7 +2,7 @@
   <!-- Toolbar with close button -->
   <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
     <span>Book Details</span>
-    <button mat-icon-button (click)="onClose()" aria-label="Close" style="color: #ff80ab;">
+    <button mat-icon-button (click)="onClose()" aria-label="Close" style="color: #e50808;">
       <mat-icon>close</mat-icon>
     </button>
   </mat-toolbar>
@@ -23,7 +23,7 @@
       <p><strong>ISBN:</strong> {{ book.isbn }}</p>
       <p><strong>Publisher:</strong> {{ book.publisher }}</p>
       <p><strong>Publish Date:</strong> {{ formattedPublishDate }}</p>
-      <p><strong>Price:</strong> {{ book.price | currency }}</p>
+      <p><strong>Price:</strong> {{ book.price | currency:'LKR '}}</p>
       <p><strong>Quantity:</strong> {{ book.quantity }}</p>
 
       <p class="description"><strong>Description:</strong> {{ book.description }}</p>

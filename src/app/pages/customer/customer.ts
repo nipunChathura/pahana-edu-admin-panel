@@ -46,7 +46,7 @@ export class Customer {
   dataSource = new MatTableDataSource<CustomerDto>(this.customers);
 
   private token;
-  private userId = 1;
+  private userId ;
 
   constructor(
     private customerService: CustomerService,
@@ -55,6 +55,7 @@ export class Customer {
     private snackBar: MatSnackBar,
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -73,7 +74,6 @@ export class Customer {
       this.customers = this.response.customerDtoList;
       this.dataSource = new MatTableDataSource<CustomerDto>(this.customers);
 
-      // Combined filter for search and status
       this.dataSource.filterPredicate = (data: CustomerDto, filter: string) => {
         const filterObj = JSON.parse(filter);
         const matchesText = (data.customerName ?? '').toLowerCase().includes(filterObj.searchText);

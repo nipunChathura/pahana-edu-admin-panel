@@ -51,7 +51,7 @@ export class Book {
   dataSource = new MatTableDataSource<BookDto>(this.books);
 
   private token;
-  private userId = 1;
+  private userId;
 
   constructor(
     private bookService: BookService,
@@ -60,6 +60,7 @@ export class Book {
     private snackBar: MatSnackBar,
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

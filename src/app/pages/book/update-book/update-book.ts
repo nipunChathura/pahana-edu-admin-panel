@@ -51,7 +51,9 @@ import {GcpService} from '../../../services/gcp.service';
     MatTab,
     MatTabGroup,
     NgIf,
-    MatDividerModule
+    MatDividerModule,
+    MatIconButton,
+    MatSuffix
   ],
   templateUrl: './update-book.html',
   styleUrl: './update-book.scss'
@@ -71,7 +73,7 @@ export class UpdateBook implements OnInit {
   defaultImage = 'assets/default-book.png';
   selectedImageFile: File | null = null;
 
-  userId: number = 1;
+  userId: number;
   token!: string;
 
   bookSelected = false;
@@ -85,6 +87,7 @@ export class UpdateBook implements OnInit {
     private gcpService: GcpService
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {
@@ -203,7 +206,7 @@ export class UpdateBook implements OnInit {
 
   // ---------------- Categories ----------------
   getCategories(): void {
-    this.categoryService.getCategoriesByStatus(1, 'ACTIVE', this.token).subscribe({
+    this.categoryService.getCategoriesByStatus(this.userId, 'ACTIVE', this.token).subscribe({
       next: response => {
         if (response.status === 'success') {
           this.categories = response.categoryDetailsList;
@@ -346,5 +349,9 @@ export class UpdateBook implements OnInit {
     this.imagePreview = null;
     this.selectedImageFile = null;
     this.bookSearchControl.reset();
+  }
+
+  clearSearch() {
+    this.onCancel();
   }
 }

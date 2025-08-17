@@ -35,7 +35,7 @@ import {MatOption, MatSelect} from '@angular/material/select';
 export class UpdateCustomer {
   customerForm: FormGroup;
   private token ;
-  private userId = 1;
+  private userId ;
 
   constructor(
     private fb: FormBuilder,
@@ -54,6 +54,7 @@ export class UpdateCustomer {
       customerStatus: ['SILVER', Validators.required]
     });
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {

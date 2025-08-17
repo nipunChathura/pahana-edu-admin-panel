@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <span>Add Promotion</span>
+  <span>Update Promotion</span>
 </mat-toolbar>
 
 <div class="toolbar-actions">
@@ -7,10 +7,14 @@
     <mat-label>Search Promotion</mat-label>
     <input
       matInput
+      [(ngModel)]="searchText"
       [formControl]="promotionSearchControl"
       [matAutocomplete]="autoPromotion"
       placeholder="Search Promotion..."
     >
+    <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
     <mat-autocomplete
       #autoPromotion="matAutocomplete"
       [displayWith]="displayPromotionTitle"
@@ -124,6 +128,8 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+
+  <h1></h1>
 
   <div class="button-group">
     <button mat-raised-button color="primary" type="submit" style="width:120px">Save</button>

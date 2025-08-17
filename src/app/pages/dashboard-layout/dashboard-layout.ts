@@ -16,7 +16,7 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/route
 
 })
 export class DashboardLayout {
-  username: string = 'Nipun';
+  username: string = localStorage.getItem('username') ?? '';
   showBookSubMenu = false;
   showPromotionSubMenu: boolean = false;
   constructor(private router: Router) {}

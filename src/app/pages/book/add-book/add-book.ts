@@ -45,6 +45,7 @@ export class AddBook {
   categories: CategoryDto[] = [];
   filteredCategories$: Observable<CategoryDto[]> = of([]);
   private token: string;
+  private userId: string;
 
   constructor(
     private fb: FormBuilder,
@@ -57,6 +58,7 @@ export class AddBook {
   ) {
     this.bookDetailsForm = this.fb.group({});
     this.token = this.auth.getToken() ?? '';
+    this.userId = localStorage.getItem('userId') ?? '';
   }
 
   ngOnInit() {
@@ -189,7 +191,7 @@ export class AddBook {
     };
 
     const bookRequest: BookRequest = {
-      userId: 1,
+      userId: Number(this.userId),
       bookId: null,
       bookDetail: bookDto
     };
@@ -243,7 +245,7 @@ export class AddBook {
   }
 
   getCategories(): void {
-    this.categoryService.getCategoriesByStatus(1, 'ACTIVE', this.token).subscribe({
+    this.categoryService.getCategoriesByStatus(Number(this.userId), 'ACTIVE', this.token).subscribe({
       next: response => {
         if (response.status === 'success') {
           this.categories = response.categoryDetailsList;

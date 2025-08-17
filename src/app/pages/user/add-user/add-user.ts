@@ -34,7 +34,7 @@ import {NgIf} from '@angular/common';
 export class AddUser {
   userForm: FormGroup;
   private token;
-  private userId = 1;
+  private userId;
 
   constructor(
     private fb: FormBuilder,
@@ -61,6 +61,7 @@ export class AddUser {
     });
 
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   // ngOnInit removed unless necessary

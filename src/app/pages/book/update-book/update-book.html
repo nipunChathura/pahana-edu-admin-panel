@@ -6,6 +6,9 @@
   <mat-form-field appearance="outline" class="search-field">
     <mat-label>Search Book</mat-label>
     <input matInput [formControl]="bookSearchControl" [matAutocomplete]="autoBook" placeholder="Search books...">
+    <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
     <mat-autocomplete #autoBook="matAutocomplete" [displayWith]="displayBookTitle" (optionSelected)="onBookSelected($event.option.value)">
       <mat-option *ngFor="let book of filteredBooks$ | async" [value]="book">{{ book.name }}</mat-option>
     </mat-autocomplete>

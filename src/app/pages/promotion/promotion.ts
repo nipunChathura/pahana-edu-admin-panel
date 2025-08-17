@@ -45,7 +45,7 @@ export class Promotion implements OnInit {
   selectedStatus: string = '';
 
   private token: string;
-  private userId: number = 1;
+  private userId: number;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -56,6 +56,7 @@ export class Promotion implements OnInit {
   private snackBar: MatSnackBar,
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {

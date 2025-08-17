@@ -124,7 +124,7 @@ export class OrderComponent implements OnInit, AfterViewInit {
   innerDisplayedColumns: string[] = ['bookName', 'author', 'itemPrice', 'itemQuantity', 'discountPrice', 'promotion'];
 
   dataSource!: MatTableDataSource<OrderDto>;
-  userId: number = 1;
+  userId: number ;
   token!: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -135,6 +135,7 @@ export class OrderComponent implements OnInit, AfterViewInit {
     private orderService: OrderService
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {

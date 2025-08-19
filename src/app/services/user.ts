@@ -22,9 +22,9 @@ export class UserService {
 
   getUsers(userId: number, token: string): Observable<UserResponse> {
     const headers = this.createHeaders(token);
-    const params = new HttpParams().set('userId', userId.toString());
+    // const params = new HttpParams().set('userId', userId.toString());
 
-    return this.http.get<UserResponse>(`${this.baseUrl}/all/${userId}`, { headers, params });
+    return this.http.get<UserResponse>(`${this.baseUrl}/all/${userId}`, { headers });
   }
 
   saveUser(request: UserRequest, token: string): Observable<UserResponse> {

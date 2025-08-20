@@ -21,3 +21,30 @@ mat-form-field {
   margin-top: 10px;
   width: 96%;
 }
+
+
+.image-upload-field {
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .image-preview {
+      position: relative;
+
+      .preview-img {
+        width: 300px;       // fixed width
+        height: 300px;      // fixed height
+        object-fit: cover;  // maintain aspect ratio
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+    }
+  }
+}

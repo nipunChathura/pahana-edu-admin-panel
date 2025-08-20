@@ -11,4 +11,5 @@ export interface PromotionDto {
   promotionStatus: string | null;
   bookIds: number [] | null;
   bookDetailsDtoList: BookDto[] | null;
+  promotionUrl?: string | null;
 }

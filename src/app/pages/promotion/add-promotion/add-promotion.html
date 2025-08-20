@@ -4,11 +4,13 @@
 
 <!--<form [formGroup]="promotionForm" (ngSubmit)="onSave()" class="form-grid">-->
 
+<!--  &lt;!&ndash; Promotion Name &ndash;&gt;-->
 <!--  <mat-form-field appearance="outline">-->
 <!--    <mat-label>Promotion Name</mat-label>-->
 <!--    <input matInput formControlName="promotionName" required>-->
 <!--  </mat-form-field>-->
 
+<!--  &lt;!&ndash; Priority &ndash;&gt;-->
 <!--  <mat-form-field appearance="outline">-->
 <!--    <mat-label>Priority</mat-label>-->
 <!--    <mat-select formControlName="priority" required>-->
@@ -16,49 +18,43 @@
 <!--    </mat-select>-->
 <!--  </mat-form-field>-->
 
-<!--  <div>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Promotion Start date</mat-label>-->
-<!--      <input matInput [matDatepicker]="datepicker" [(ngModel)]="startValue">-->
-<!--      <mat-datepicker #datepicker/>-->
-<!--      <mat-datepicker-toggle [for]="datepicker" matSuffix/>-->
-<!--    </mat-form-field>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Promotion Start time</mat-label>-->
-<!--      <input matInput-->
-<!--             formControlName="promotionStartDate"-->
-<!--             [matTimepicker]="timepicker"-->
-<!--             [(ngModel)]="startValue"-->
-<!--             [ngModelOptions]="{updateOn: 'blur'}">-->
-<!--      <mat-timepicker #timepicker/>-->
-<!--      <mat-timepicker-toggle [for]="timepicker" matSuffix/>-->
+<!--  &lt;!&ndash; Start Date & Time &ndash;&gt;-->
+<!--  <div class="date-time-group">-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Promotion Start Date</mat-label>-->
+<!--      <input matInput [matDatepicker]="startPicker" formControlName="promotionStartDate" [min]="minStartDate">-->
+<!--      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>-->
+<!--      <mat-datepicker #startPicker></mat-datepicker>-->
 <!--    </mat-form-field>-->
 
-<!--    <p>Value: {{startValue}}</p>-->
+<!--    &lt;!&ndash; Start Time &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Promotion Start Time</mat-label>-->
+<!--      <input matInput [matTimepicker]="startTimePicker" formControlName="promotionStartTime">-->
+<!--      <mat-timepicker-toggle matSuffix [for]="startTimePicker"></mat-timepicker-toggle>-->
+<!--      <mat-timepicker #startTimePicker></mat-timepicker>-->
+<!--    </mat-form-field>-->
 <!--  </div>-->
 
-<!--  <div>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Promotion End date</mat-label>-->
-<!--      <input matInput [matDatepicker]="datepicker" [(ngModel)]="startValue">-->
-<!--      <mat-datepicker #datepicker/>-->
-<!--      <mat-datepicker-toggle [for]="datepicker" matSuffix/>-->
-<!--    </mat-form-field>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Promotion End time</mat-label>-->
-<!--      <input matInput-->
-<!--             formControlName="promotionStartDate"-->
-<!--             [matTimepicker]="timepicker"-->
-<!--             [(ngModel)]="startValue"-->
-<!--             [ngModelOptions]="{updateOn: 'blur'}">-->
-<!--      <mat-timepicker #timepicker/>-->
-<!--      <mat-timepicker-toggle [for]="timepicker" matSuffix/>-->
+<!--  &lt;!&ndash; End Date & Time &ndash;&gt;-->
+<!--  <div class="date-time-group">-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Promotion End Date</mat-label>-->
+<!--      <input matInput [matDatepicker]="endPicker" formControlName="promotionEndDate" [min]="minEndDate">-->
+<!--      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>-->
+<!--      <mat-datepicker #endPicker></mat-datepicker>-->
 <!--    </mat-form-field>-->
 
-<!--    <p>Value: {{endValue}}</p>-->
+<!--    &lt;!&ndash; End Time &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Promotion End Time</mat-label>-->
+<!--      <input matInput [matTimepicker]="endTimePicker" formControlName="promotionEndTime">-->
+<!--      <mat-timepicker-toggle matSuffix [for]="endTimePicker"></mat-timepicker-toggle>-->
+<!--      <mat-timepicker #endTimePicker></mat-timepicker>-->
+<!--    </mat-form-field>-->
 <!--  </div>-->
 
-
+<!--  &lt;!&ndash; Promotion Type &ndash;&gt;-->
 <!--  <mat-form-field appearance="outline">-->
 <!--    <mat-label>Promotion Type</mat-label>-->
 <!--    <mat-select formControlName="promotionType" required>-->
@@ -67,30 +63,34 @@
 <!--    </mat-select>-->
 <!--  </mat-form-field>-->
 
+<!--  &lt;!&ndash; Promotion Price &ndash;&gt;-->
 <!--  <mat-form-field appearance="outline">-->
 <!--    <mat-label>Promotion Price</mat-label>-->
 <!--    <input matInput type="number" formControlName="promotionPrice" required>-->
 <!--  </mat-form-field>-->
 
-<!--  &lt;!&ndash; Selected Books Chips &ndash;&gt;-->
 <!--  <mat-form-field appearance="outline" class="full-width">-->
 <!--    <mat-label>Selected Books</mat-label>-->
+
+<!--    &lt;!&ndash; Chips on top &ndash;&gt;-->
 <!--    <mat-chip-grid #chipGrid>-->
-<!--      <mat-chip-row *ngFor="let book of selectedBooks"-->
-<!--                    [removable]="true"-->
-<!--                    (removed)="removeBook(book)">-->
+<!--      <mat-chip-row *ngFor="let book of selectedBooks" [removable]="true" (removed)="removeBook(book)">-->
 <!--        {{ book.name }}-->
 <!--        <mat-icon matChipRemove>cancel</mat-icon>-->
 <!--      </mat-chip-row>-->
-
-<!--      <input-->
-<!--        placeholder="Search books..."-->
-<!--        [matAutocomplete]="auto"-->
-<!--        [formControl]="bookCtrl"-->
-<!--        [matChipInputFor]="chipGrid"-->
-<!--        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
-<!--        (matChipInputTokenEnd)="addBook($event)">-->
 <!--    </mat-chip-grid>-->
+
+<!--    &lt;!&ndash; Input below &ndash;&gt;-->
+<!--    <input-->
+<!--      matInput-->
+<!--      style="margin-top: 10px"-->
+<!--      placeholder="Search books..."-->
+<!--      [formControl]="bookCtrl"-->
+<!--      [matAutocomplete]="auto"-->
+<!--      [matChipInputFor]="chipGrid"-->
+<!--      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"-->
+<!--      (matChipInputTokenEnd)="addBook($event)"-->
+<!--    >-->
 
 <!--    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedBook($event)">-->
 <!--      <mat-option *ngFor="let book of filteredBooks | async" [value]="book.name">-->
@@ -99,10 +99,31 @@
 <!--    </mat-autocomplete>-->
 <!--  </mat-form-field>-->
 
+<!--  <mat-form-field appearance="outline" class="full-width image-upload-field">-->
+<!--    <mat-label>Promotion Image</mat-label>-->
+
+<!--    <div class="upload-box">-->
+<!--      <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">-->
+<!--        Select Image-->
+<!--      </button>-->
+<!--      <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">-->
+
+<!--      &lt;!&ndash; Image Preview &ndash;&gt;-->
+<!--      <div class="image-preview" *ngIf="imagePreview || defaultImage">-->
+<!--        <img [src]="imagePreview || defaultImage" alt="Promotion Image" class="preview-img">-->
+<!--        <button mat-mini-fab color="warn" *ngIf="imagePreview" (click)="removeImage()">-->
+<!--          <mat-icon>close</mat-icon>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </mat-form-field>-->
+
+<!--  &lt;!&ndash; Buttons &ndash;&gt;-->
 <!--  <div class="button-group">-->
 <!--    <button mat-raised-button color="primary" type="submit" style="width:120px">Save</button>-->
 <!--    <button mat-raised-button color="warn" type="button" style="width:120px" (click)="onCancel()">Cancel</button>-->
 <!--  </div>-->
+
 <!--</form>-->
 
 
@@ -135,7 +156,6 @@
       <mat-datepicker #startPicker></mat-datepicker>
     </mat-form-field>
 
-    <!-- Start Time -->
     <mat-form-field appearance="outline">
       <mat-label>Promotion Start Time</mat-label>
       <input matInput [matTimepicker]="startTimePicker" formControlName="promotionStartTime">
@@ -153,7 +173,6 @@
       <mat-datepicker #endPicker></mat-datepicker>
     </mat-form-field>
 
-    <!-- End Time -->
     <mat-form-field appearance="outline">
       <mat-label>Promotion End Time</mat-label>
       <input matInput [matTimepicker]="endTimePicker" formControlName="promotionEndTime">
@@ -177,10 +196,9 @@
     <input matInput type="number" formControlName="promotionPrice" required>
   </mat-form-field>
 
+  <!-- Selected Books -->
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Selected Books</mat-label>
-
-    <!-- Chips on top -->
     <mat-chip-grid #chipGrid>
       <mat-chip-row *ngFor="let book of selectedBooks" [removable]="true" (removed)="removeBook(book)">
         {{ book.name }}
@@ -188,18 +206,9 @@
       </mat-chip-row>
     </mat-chip-grid>
 
-    <!-- Input below -->
-    <input
-      matInput
-      style="margin-top: 10px"
-      placeholder="Search books..."
-      [formControl]="bookCtrl"
-      [matAutocomplete]="auto"
-      [matChipInputFor]="chipGrid"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      (matChipInputTokenEnd)="addBook($event)"
-    >
-
+    <input matInput placeholder="Search books..." [formControl]="bookCtrl" [matAutocomplete]="auto"
+           [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           (matChipInputTokenEnd)="addBook($event)">
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedBook($event)">
       <mat-option *ngFor="let book of filteredBooks | async" [value]="book.name">
         {{ book.name }}
@@ -207,7 +216,22 @@
     </mat-autocomplete>
   </mat-form-field>
 
-  <span class="spacer"></span>
+  <!-- Image Upload (outside mat-form-field) -->
+  <div class="full-width image-upload-field">
+    <label>Promotion Image</label>
+    <div class="upload-box">
+      <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">Select Image</button>
+      <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">
+      <div class="image-preview" *ngIf="imagePreview || defaultImage">
+        <img [src]="imagePreview || defaultImage" alt="Promotion Image" class="preview-img">
+        <button mat-mini-fab color="warn" *ngIf="imagePreview" (click)="removeImage()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <h1></h1>
 
   <!-- Buttons -->
   <div class="button-group">

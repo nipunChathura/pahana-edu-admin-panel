@@ -129,6 +129,42 @@
     </mat-autocomplete>
   </mat-form-field>
 
+<!--  <div class="full-width image-upload-field">-->
+<!--    <label>Promotion Image</label>-->
+<!--    <div class="upload-box">-->
+<!--      <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">Select Image</button>-->
+<!--      <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">-->
+
+<!--      &lt;!&ndash; Image Preview &ndash;&gt;-->
+<!--      <div class="image-preview" *ngIf="imagePreview || defaultImage">-->
+<!--        <img [src]="imagePreview || defaultImage" alt="Promotion Image" class="preview-img">-->
+<!--        <button mat-mini-fab color="warn" *ngIf="imagePreview" (click)="removeImage()">-->
+<!--          <mat-icon>close</mat-icon>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="full-width image-upload-field">
+    <label>Promotion Image</label>
+    <div class="upload-box">
+      <button mat-raised-button color="primary" type="button" (click)="fileInput.click()">Select Image</button>
+      <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">
+
+      <!-- Image Preview -->
+      <div class="image-preview">
+        <img
+          [src]="imagePreview || selectedPromotion?.promotionUrl || defaultImage"
+          alt="Promotion Image"
+          class="preview-img"
+        >
+        <button mat-mini-fab color="warn" *ngIf="imagePreview" (click)="removeImage()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <h1></h1>
 
   <div class="button-group">

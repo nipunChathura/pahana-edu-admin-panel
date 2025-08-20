@@ -6,7 +6,7 @@ import {
   MatAutocompleteTrigger,
   MatOption
 } from '@angular/material/autocomplete';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton, MatMiniFabButton} from '@angular/material/button';
 import {MatChipGrid, MatChipInput, MatChipInputEvent, MatChipRemove, MatChipRow} from '@angular/material/chips';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
@@ -26,6 +26,7 @@ import {PromotionRequest} from '../../../services/request/PromotionRequest';
 import {PromotionDto} from '../../../services/dto/PromotionDto';
 import {AwardDto} from '../../../services/dto/AwardDto';
 import {CategoryDto} from '../../../services/dto/CategoryDto';
+import {GcpService} from '../../../services/gcp.service';
 
 @Component({
   selector: 'app-update-promotion',
@@ -55,7 +56,8 @@ import {CategoryDto} from '../../../services/dto/CategoryDto';
     MatToolbar,
     NgForOf,
     ReactiveFormsModule,
-    MatIconButton
+    MatIconButton,
+    MatMiniFabButton
   ],
   templateUrl: './update-promotion.html',
   styleUrl: './update-promotion.scss'
@@ -76,6 +78,8 @@ export class UpdatePromotion {
   minStartDate: Date = new Date();
   minEndDate: Date = new Date();
 
+  imageUrl: string = '';
+
   availableBooks: BookDto[] = [];
   selectedBooks: BookDto[] = [];
   bookCtrl = new FormControl('');
@@ -89,7 +93,8 @@ export class UpdatePromotion {
     private bookService: BookService,
     private promotionService: PromotionService,
     private auth: Auth,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private gcpService: GcpService
   ) {
     this.token = this.auth.getToken() ?? '';
     this.userId = Number(localStorage.getItem('userId') ?? '');
@@ -150,6 +155,8 @@ export class UpdatePromotion {
       promotionPrice: promotionDto.promotionPrice,
       bookIds: this.selectedBooks.map(b => b.bookId)
     });
+    this.imagePreview = promotionDto.promotionUrl || null;
+    this.selectedImageFile = null;
 
     this.filteredBooks = of(
       this.availableBooks.filter(b => !this.selectedBooks.some(sb => sb.bookId === b.bookId))
@@ -249,44 +256,76 @@ export class UpdatePromotion {
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   }
 
+  formatDateTime(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
+
   onSave(): void {
+    if (this.selectedImageFile) {
+      this.gcpService.uploadImage(this.selectedImageFile, this.token).subscribe({
+        next: res => {
+          if (res.status === 'success') {
+            this.imageUrl = res.imageUrl;
+            this.updatePromotion(this.imageUrl);
+          } else {
+            this.snackBar.open(`Image upload error: ${res.responseMessage}`, 'Close', {
+              duration: 3000,
+              panelClass: ['snack-error'],
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            });
+          }
+        },
+        error: err => console.error('Image upload failed', err)
+      });
+    } else {
+      this.updatePromotion(this.imageUrl);
+    }
+  }
+  updatePromotion(imageUrl: string): void {
     const formValue = this.promotionForm.getRawValue(); // include disabled fields
 
     const startDateTime = this.combineDateAndTime(formValue.promotionStartDate, formValue.promotionStartTime);
     const endDateTime = this.combineDateAndTime(formValue.promotionEndDate, formValue.promotionEndTime);
 
+    const promotionDto: PromotionDto = {
+      promotionId: this.selectedPromotion?.promotionId ?? null,
+      promotionName: formValue.promotionName,
+      promotionStartDate: this.formatDateToISO(startDateTime),
+      promotionEndDate: this.formatDateToISO(endDateTime),
+      promotionType: formValue.promotionType,
+      promotionStatus: formValue.promotionStatus,
+      promotionPrice: formValue.promotionPrice,
+      priority: formValue.priority,
+      bookIds: formValue.bookIds,
+      bookDetailsDtoList: this.selectedBooks.length ? this.selectedBooks : []
+    };
+
     const request: PromotionRequest = {
       promotionId: this.selectedPromotion?.promotionId ?? null,
       bookId: null,
       requestBookDetails: false,
-      promotionDto: {
-        promotionId: this.selectedPromotion?.promotionId ?? null,
-        promotionName: formValue.promotionName,
-        promotionStartDate: this.formatDateToISO(startDateTime),
-        promotionEndDate: this.formatDateToISO(endDateTime),
-        promotionType: formValue.promotionType,
-        promotionStatus: formValue.promotionStatus,
-        promotionPrice: formValue.promotionPrice,
-        priority: formValue.priority,
-        bookIds: formValue.bookIds,
-        bookDetailsDtoList: this.selectedBooks.length ? this.selectedBooks : []
-      }
+      promotionDto: promotionDto
     };
 
     this.promotionService.updatePromotion(request, this.token).subscribe({
       next: response => {
         if (response.status === 'success') {
-          this.snackBar.open('Promotion saved successfully', 'Close', {
+          this.snackBar.open('Promotion Update successfully', 'Close', {
             duration: 3000,
             panelClass: ['snack-info'],
             horizontalPosition: 'center',
             verticalPosition: 'top'
           });
           this.onCancel();
-          this.promotionSearchControl.reset();
-          this.loadAllPromotion();
         } else {
-          this.snackBar.open(`Promotion save error: ${response.responseMessage}`, 'Close', {
+          this.snackBar.open(`Promotion Update error: ${response.responseMessage}`, 'Close', {
             duration: 3000,
             panelClass: ['snack-error'],
             horizontalPosition: 'center',
@@ -294,7 +333,7 @@ export class UpdatePromotion {
           });
         }
       },
-      error: err => console.error('Error saving promotion', err)
+      error: err => console.error('Error Update promotion', err)
     });
   }
 
@@ -312,4 +351,26 @@ export class UpdatePromotion {
     this.selectedBooks = [];
     this.promotionForm.disable();
   }
+
+  imagePreview: string | ArrayBuffer | null = null;
+  defaultImage = 'assets/default-promotion.png';
+  selectedImageFile: File | null = null;
+
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedImageFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage() {
+    this.imagePreview = null;
+    this.selectedImageFile = null;
+  }
+
 }

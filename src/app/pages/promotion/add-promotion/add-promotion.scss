@@ -23,18 +23,70 @@ mat-form-field {
 }
 
 
-//.form-grid {
-//  display: grid;
-//  grid-template-columns: repeat(2, 1fr);
-//  gap: 16px;
-//}
-//
-//.full-width {
-//  grid-column: span 2;
-//}
-//
-//.button-group {
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+
+//.image-upload-field .upload-box {
 //  display: flex;
-//  justify-content: flex-end;
-//  gap: 8px;
+//  flex-direction: column;
+//  gap: 10px;
 //}
+//
+//.image-preview {
+//  position: relative;
+//  display: inline-block;
+//}
+//
+//.preview-img {
+//  max-width: 150px;
+//  max-height: 150px;
+//  border-radius: 8px;
+//  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+//  margin-top: 8px;
+//}
+//
+//.image-preview button {
+//  position: absolute;
+//  top: -8px;
+//  right: -8px;
+//}
+
+.image-upload-field {
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .image-preview {
+      position: relative;
+
+      .preview-img {
+        width: 300px;       // fixed width
+        height: 300px;      // fixed height
+        object-fit: cover;  // maintain aspect ratio, crop if necessary
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+    }
+  }
+}

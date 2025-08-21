@@ -7,7 +7,7 @@ import {CustomerRequest} from './request/CustomerRequest';
   providedIn: 'root'
 })
 export class CustomerService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/customers';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/customers';
 
   constructor(private http: HttpClient) {}
 

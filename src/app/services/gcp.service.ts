@@ -9,7 +9,7 @@ import {GcpResponse} from './response/GcpResponse';
   providedIn: 'root'
 })
 export class GcpService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/gcp';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/gcp';
 
   constructor(private http: HttpClient) {}
 

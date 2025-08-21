@@ -10,7 +10,7 @@ import {BookRequest} from './request/BookRequest';
   providedIn: 'root'
 })
 export class BookService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/books';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/books';
 
   constructor(private http: HttpClient) {}
 

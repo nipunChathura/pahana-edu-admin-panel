@@ -10,7 +10,7 @@ import {PromotionRequest} from './request/PromotionRequest';
   providedIn: 'root'
 })
 export class PromotionService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/promotions';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/promotions';
 
   constructor(private http: HttpClient) {}
 

@@ -8,8 +8,8 @@ import {AuthRequest} from './request/AuthRequest';
   providedIn: 'root'
 })
 export class Auth {
-  private loginUrl = 'http://localhost:9090/pahana-edu/api/auth/login';
-  private registerUrl = 'http://localhost:9090/pahana-edu/api/auth';
+  private loginUrl = 'http://34.47.130.115:9090/pahana-edu/api/auth/login';
+  private registerUrl = 'http://34.47.130.115:9090/pahana-edu/api/auth';
 
   constructor(private http: HttpClient) {}
 

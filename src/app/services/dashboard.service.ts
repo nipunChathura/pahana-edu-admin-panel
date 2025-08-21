@@ -8,7 +8,7 @@ import {DashboardResponse} from './response/DashboardResponse';
   providedIn: 'root'
 })
 export class DashboardService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/dashboard';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/dashboard';
 
   constructor(private http: HttpClient) {}
 

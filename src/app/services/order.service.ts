@@ -9,7 +9,7 @@ import {OrderResponse} from './response/OrderResponse';
   providedIn: 'root'
 })
 export class OrderService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/orders';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/orders';
 
   constructor(private http: HttpClient) {}
 

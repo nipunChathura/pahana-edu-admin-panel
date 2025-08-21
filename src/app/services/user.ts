@@ -9,7 +9,7 @@ import {UserRequest} from './request/UserRequest';
   providedIn: 'root'
 })
 export class UserService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/users';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/users';
 
   constructor(private http: HttpClient) {}
 

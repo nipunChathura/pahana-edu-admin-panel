@@ -8,7 +8,7 @@ import { CategoryRequest } from './request/CategoryRequest';
   providedIn: 'root'
 })
 export class CategoryService {
-  private readonly baseUrl = 'http://localhost:9090/pahana-edu/api/categories';
+  private readonly baseUrl = 'http://34.47.130.115:9090/pahana-edu/api/categories';
 
   constructor(private http: HttpClient) {}
 

@@ -48,9 +48,15 @@ export class LoginSignup {
 
       this.auth.login(username, password).subscribe({
         next: (response) => {
-          console.log('Token:', response.token);
-          localStorage.setItem('authToken', response.token);
-          this.router.navigate(['/dashboard']);
+
+          if (response.status === 'success') {
+            console.log('Token:', response.token);
+            localStorage.setItem('authToken', response.token);
+            this.router.navigate(['/dashboard']);
+          } else {
+            console.error('Login failed:', response.responseMessage);
+            alert('Login failed. Please check your credentials.');
+          }
         },
         error: (err) => {
           console.error('Login failed:', err);
@@ -66,10 +72,16 @@ export class LoginSignup {
 
       this.auth.register(signupData).subscribe({
         next: (response) => {
-          console.log('Signup successful:', response);
-          alert('Registration successful. You can now log in.');
-          this.selectedTabIndex = 0;
-          this.signupForm.reset();
+
+          if (response.status === 'success') {
+            console.log('Signup successful:', response);
+            alert('Registration successful. You can now log in.');
+            this.selectedTabIndex = 0;
+            this.signupForm.reset();
+          } else {
+            console.error('Signup failed:', response.responseMessage);
+            alert('Signup failed. Please try again.');
+          }
         },
         error: (error) => {
           console.error('Signup failed:', error);

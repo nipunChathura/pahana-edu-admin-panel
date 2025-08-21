@@ -1,0 +1,56 @@
+<mat-card class="promotion-details-card">
+  <mat-toolbar>
+    <span>Promotion Details</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="promotion-info" color="primary">
+    <p><strong>Name:</strong> {{ promotion.promotionName }}</p>
+    <p><strong>Type:</strong> {{ promotion.promotionType }}</p>
+    <p>
+      <strong>Price/Discount:</strong>
+      {{ promotion.promotionPrice | number:'1.2-2' }}
+      {{ promotion.promotionType === 'PERCENTAGE' ? '%' : '' }}
+    </p>
+    <p><strong>Priority:</strong> {{ promotion.priority }}</p>
+    <p><strong>Status:</strong> {{ promotion.promotionStatus }}</p>
+    <p><strong>Start Date:</strong> {{ promotion.promotionStartDate | date:'medium' }}</p>
+    <p><strong>End Date:</strong> {{ promotion.promotionEndDate | date:'medium' }}</p>
+  </div>
+
+  <h3>Books in Promotion</h3>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Book Name -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Book Name </th>
+      <td mat-cell *matCellDef="let book"> {{ book.name }} </td>
+    </ng-container>
+
+    <!-- Original Price -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let book"> {{ book.price | number:'1.2-2' }} </td>
+    </ng-container>
+
+    <!-- Quantity -->
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td mat-cell *matCellDef="let book"> {{ book.quantity }} </td>
+    </ng-container>
+
+    <!-- Discounted Price -->
+    <ng-container matColumnDef="discountPrice">
+      <th mat-header-cell *matHeaderCellDef> Discount Price </th>
+      <td mat-cell *matCellDef="let book">
+        {{ getDiscountPrice(book.price) | number:'1.2-2' }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</mat-card>

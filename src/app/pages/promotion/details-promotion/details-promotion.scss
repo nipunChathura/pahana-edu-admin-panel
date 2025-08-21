@@ -1,0 +1,67 @@
+.promotion-details-card {
+  max-width: 900px;
+  margin: 0px auto;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  mat-toolbar {
+    background-color: #673ab7; /* Violet */
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px 8px 0 0;
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    button {
+      color: #000000; /* Magenta */
+      background-color: #e91e63;
+    }
+  }
+
+  .promotion-info {
+    margin: 10px 0;
+    color: #ffffff;
+  }
+
+  h3 {
+    margin-top: 24px;
+    font-weight: 500;
+    color: #ffffff;
+    font-style: revert;
+  }
+
+  table {
+    width: 100%;
+    margin-top: 12px;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #663ab7; /* Light violet */
+      font-weight: 600;
+    }
+
+    //tr:nth-child(even) {
+    //  background-color: #ede7f6; /* Very light violet */
+    //}
+
+    .original-price {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .discount-price {
+      font-weight: 600;
+      color: #e91e63; /* Magenta */
+    }
+  }
+}

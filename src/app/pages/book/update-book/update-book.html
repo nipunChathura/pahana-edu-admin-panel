@@ -1,0 +1,124 @@
+<mat-toolbar color="primary">
+  <span>Update Book</span>
+</mat-toolbar>
+
+<div class="toolbar-actions">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search Book</mat-label>
+    <input matInput [formControl]="bookSearchControl" [matAutocomplete]="autoBook" placeholder="Search books...">
+    <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-autocomplete #autoBook="matAutocomplete" [displayWith]="displayBookTitle" (optionSelected)="onBookSelected($event.option.value)">
+      <mat-option *ngFor="let book of filteredBooks$ | async" [value]="book">{{ book.name }}</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
+<form [formGroup]="bookDetailsForm" class="form-container">
+  <mat-tab-group>
+
+    <!-- Book Details Tab -->
+    <mat-tab label="Book Details">
+      <div class="two-column-grid" style="margin-top: 10px">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Category</mat-label>
+          <input matInput [formControl]="categoryControl" [matAutocomplete]="autoCategory">
+          <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="displayCategory">
+            <mat-option *ngFor="let category of filteredCategories$ | async" [value]="category">
+              {{ category.categoryName }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Author</mat-label>
+          <input matInput formControlName="author">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Language</mat-label>
+          <input matInput formControlName="language">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Publisher</mat-label>
+          <input matInput formControlName="publisher">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Publish Date</mat-label>
+          <input matInput formControlName="publishDate">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>ISBN</mat-label>
+          <input matInput formControlName="isbn">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Price</mat-label>
+          <input type="number" matInput formControlName="price">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Quantity</mat-label>
+          <input type="number" matInput formControlName="quantity">
+        </mat-form-field>
+
+        <!-- Image Upload -->
+        <div class="image-upload-container">
+          <button mat-raised-button color="primary" type="button" [disabled]="!bookSelected" (click)="fileInput.click()">Select Image</button>
+          <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">
+          <div class="image-preview">
+            <img [src]="imagePreview || defaultImage" alt="Book Image" class="preview-img">
+            <button mat-mini-fab color="warn" *ngIf="imagePreview" (click)="removeImage()"><mat-icon>close</mat-icon></button>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Award Details Tab -->
+    <mat-tab label="Award Details">
+      <div formArrayName="awards">
+        <div *ngFor="let award of awards.controls; let i = index" [formGroupName]="i">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Award Name</mat-label>
+            <input matInput formControlName="awardName">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Award Description</mat-label>
+            <textarea matInput formControlName="awardDescription"></textarea>
+          </mat-form-field>
+
+          <button mat-mini-fab color="warn" *ngIf="awards.length > 1" [disabled]="!bookSelected" (click)="removeAward(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+
+      <button mat-stroked-button color="primary" type="button" [disabled]="!bookSelected" (click)="addAward()">
+        <mat-icon>add</mat-icon> Add Award
+      </button>
+    </mat-tab>
+
+  </mat-tab-group>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button mat-raised-button color="primary" type="button" (click)="onUpdate()" [disabled]="!bookSelected">Update</button>
+    <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+  </div>
+</form>

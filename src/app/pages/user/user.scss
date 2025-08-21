@@ -1,0 +1,77 @@
+.spacer {
+  flex: 1 1 auto;
+}
+mat-toolbar button {
+  margin-right: 8px;
+}
+table {
+  width: 100%;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: #3f3f3f;
+}
+
+.active-status {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive-status {
+  color: orange;
+  font-weight: bold;
+}
+
+.initiate-status {
+  color: #031e7a;
+  font-weight: bold;
+}
+
+.not-approved-status {
+  color: #faed01;
+  font-weight: bold;
+}
+
+.block-status {
+  color: #800000;
+  font-weight: bold;
+}
+
+.active-row {
+  background-color: #3c4f3d; /* light green */
+}
+
+.inactive-row {
+  background-color: #564438; /* light red */
+}
+
+.initiate-row {
+  background-color: #3c455e;
+}
+
+.not-approved-row {
+  background-color: #a4a26f;
+}
+
+.block-row {
+  background-color: #ad6b6b;
+}
+
+table.mat-table {
+  td.mat-cell {
+    color: #333; /* darker text */
+  }
+  tr.mat-row:hover td.mat-cell {
+    color: #1976d2; /* blue text on hover */
+  }
+}
+
+table.mat-table {
+  tr.mat-row:hover {
+    background-color: #e3f2fd; /* light blue on hover */
+  }
+}

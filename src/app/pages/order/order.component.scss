@@ -1,0 +1,80 @@
+.spacer {
+  flex: 1 1 auto;
+}
+mat-toolbar button {
+  margin-right: 8px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 16px;
+  background: #3f3f3f;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+.order-row {
+  cursor: pointer;
+}
+
+.detail-row {
+  background: #464545;
+}
+
+.expanded-content {
+  padding-left: 20px;
+
+  .order-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 12px 24px;
+    margin-bottom: 16px;
+  }
+}
+
+.order-details-grid-two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  text-decoration: underline;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.order-title {
+  margin-top: 5px;
+  text-decoration: underline;
+  font-weight: bold;
+
+}
+
+.section-title {
+  text-decoration: underline;
+  margin-bottom: 12px;
+  font-weight: 600;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 25px;
+
+}
+
+.inner-table {
+  width: 100%;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+}
+
+.placeholder-text {
+  font-style: italic;
+  color: #888;
+  padding: 8px 0;
+}

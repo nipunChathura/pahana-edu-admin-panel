@@ -1,1 +1,105 @@
-<p>promotion works!</p>
+<mat-toolbar color="primary" class="top-header">
+  <span>Promotion Manage</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<!-- Search and filter BELOW the toolbar -->
+<div class="toolbar-actions">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchText" autocomplete="off" (keyup)="applyFilter($event)" placeholder="Search promotions..." />
+    <button mat-icon-button matSuffix aria-label="Clear" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="status-field">
+    <mat-label>Status</mat-label>
+    <mat-select [(value)]="selectedStatus" (selectionChange)="applyStatusFilter()">
+      <mat-option value="">All</mat-option>
+      <mat-option value="ACTIVE">Active</mat-option>
+      <mat-option value="INACTIVE">Inactive</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<router-outlet></router-outlet>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%; margin-top: 20px;">
+
+  <!-- Action Column FIRST -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="primary" (click)="onView(element)">
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="onDelete(element)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element">{{element.promotionId}}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element" [innerHTML]="element.promotionName | highlight:searchText"></td>
+  </ng-container>
+
+  <!-- Start Date Column -->
+  <ng-container matColumnDef="startDate">
+    <th mat-header-cell *matHeaderCellDef>Start Date</th>
+    <td mat-cell *matCellDef="let element">{{element.promotionStartDate | date:'medium'}}</td>
+  </ng-container>
+
+  <!-- End Date Column -->
+  <ng-container matColumnDef="endDate">
+    <th mat-header-cell *matHeaderCellDef>End Date</th>
+    <td mat-cell *matCellDef="let element">{{element.promotionEndDate | date:'medium'}}</td>
+  </ng-container>
+
+  <!-- Type Column -->
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>Type</th>
+    <td mat-cell *matCellDef="let element">{{element.promotionType}}</td>
+  </ng-container>
+
+  <!-- Price Column -->
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef>Price (LKR)</th>
+    <td mat-cell *matCellDef="let element">{{element.promotionPrice}}</td>
+  </ng-container>
+
+  <!-- Priority Column -->
+  <ng-container matColumnDef="priority">
+    <th mat-header-cell *matHeaderCellDef>Priority</th>
+    <td mat-cell *matCellDef="let element">{{element.priority}}</td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let element"
+        [ngClass]="{
+          'active-status': element.promotionStatus === 'ACTIVE',
+          'inactive-status': element.promotionStatus === 'INACTIVE'
+        }">{{element.promotionStatus}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: allColumns" [ngClass]="{
+    'active-row': row.promotionStatus === 'ACTIVE',
+    'inactive-row': row.promotionStatus === 'INACTIVE'
+  }"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]"
+               showFirstLastButtons
+               aria-label="Select page of promotions">
+</mat-paginator>

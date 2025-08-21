@@ -1,0 +1,94 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.sidenav-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+.top-header {
+  position: static;
+  top: 0;
+  z-index: 2;
+  flex-shrink: 0;
+  height: 64px;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 16px;
+  overflow-y: auto;
+  min-height: 81%;
+}
+
+.footer-bar {
+  height: 40px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.menu-button {
+  margin-right: 8px;
+}
+
+mat-sidenav {
+  width: 200px;
+}
+
+.sub-menu {
+  padding-left: 32px;
+}
+
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-label {
+  margin-left: 8px;
+  display: table-caption;
+}
+
+.leading-icon {
+  margin-right: 4px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.expand-icon {
+  margin-left: auto;
+}
+
+/* Optional: increase clickable area of arrow */
+.expand-icon:hover {
+  cursor: pointer;
+}
+
+/* Prevent Angular Material inner list item layout override */
+.mat-mdc-list-item-unscoped-content,
+.mat-mdc-list-item-unscoped-content > * {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}

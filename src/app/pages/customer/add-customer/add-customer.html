@@ -1,0 +1,51 @@
+<mat-toolbar style="justify-content: center;" color="primary" class="top-header">
+  <span>Add New Customer</span>
+</mat-toolbar>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  <form [formGroup]="customerForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Customer Name</mat-label>
+      <input matInput formControlName="customerName"/>
+      <mat-error *ngIf="customerForm.get('customerName')?.hasError('required')">
+        Name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="customerEmail" type="email" required/>
+      <mat-error *ngIf="customerForm.get('customerEmail')?.hasError('required')">
+        Email is required.
+      </mat-error>
+      <mat-error *ngIf="customerForm.get('customerEmail')?.hasError('email')">
+        Please enter a valid email address.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Phone Number</mat-label>
+      <input
+        matInput
+        formControlName="phoneNumber"
+        autocomplete="off"
+        required
+        pattern="[0-9]*"
+        inputmode="numeric"
+        (keypress)="allowOnlyNumbers($event)"
+      />
+      <mat-error *ngIf="customerForm.get('phoneNumber')?.hasError('required')">
+        Mobile Number is required.
+      </mat-error>
+      <mat-error *ngIf="customerForm.get('phoneNumber')?.hasError('pattern')">
+        Invalid Sri Lankan mobile number
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="customerForm.invalid">Save</button>
+</mat-dialog-actions>

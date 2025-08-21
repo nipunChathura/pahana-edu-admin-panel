@@ -1,0 +1,44 @@
+//.dialog-content-wrapper {
+//  display: flex;
+//  flex-direction: column;
+//  align-items: center;
+//  justify-content: center;
+//  height: 100%;
+//  width: 100%;
+//}
+//
+//mat-dialog-content {
+//  width: 100%;
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//}
+//
+//form {
+//  width: 100%;
+//  max-width: 350px;
+//  display: flex;
+//  flex-direction: column;
+//  gap: 20px;
+//}
+
+.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form-field {
+  flex: 1 1 calc(50% - 16px); /* two columns with gap */
+}
+
+.full-span {
+  flex: 1 1 100%; /* full width for dropdown or large fields */
+}
+
+@media (max-width: 768px) {
+  .form-field {
+    flex: 1 1 100%; /* stack fields in mobile view */
+  }
+}
+

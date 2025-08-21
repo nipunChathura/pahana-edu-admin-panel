@@ -1,4 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.snack-error {
+  background-color: #f44336 !important;
+  color: #fff !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.apexcharts-menu-item {
+  color: #1976d2 !important;
+}
+
+
+.apexcharts-menu-item:hover {
+  background-color: #1976d2 !important;
+  color: #fff !important;
+}
+
+.apexcharts-tooltip {
+  background: #fff !important;
+  color: #1976d2 !important;
+  font-size: 14px !important;
+  border-radius: 8px !important;
+}
+
+
+//&::-webkit-scrollbar {
+//  width: 8px;
+//}
+//&::-webkit-scrollbar-track {
+//  background: #2a1a3d;
+//  border-radius: 4px;
+//}
+//&::-webkit-scrollbar-thumb {
+//  background: #52156e; // magenta scrollbar
+//  border-radius: 4px;
+//}
+//&::-webkit-scrollbar-thumb:hover {
+//  background: #f10606;
+//}
+
+* {
+  scrollbar-width: thin;            /* Firefox */
+  scrollbar-color: #52156e #2a1a3d; /* Firefox */
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #2a1a3d;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #52156e;
+  border-radius: 2px;
+  border: 2px solid #1a1a1a;
+}

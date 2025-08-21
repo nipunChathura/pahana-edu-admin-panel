@@ -1,0 +1,74 @@
+.auth-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #414142;
+}
+
+.left-panel {
+  flex: 1;
+  background: url('../../../../public/assets/pahana-edu-logo.jpg') center center no-repeat;
+  background-size: cover;
+  color: #181d3e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  text-align: center;
+}
+
+.left-panel .logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+.branding-text h1 {
+  font-weight: bold;
+  font-size: 36px;
+  margin-top: 50px;
+  color: #181d3e;
+  text-align: center;
+}
+
+.branding-text p {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 10px;
+  color: #181d3e;
+  text-align: center;
+}
+
+.right-panel {
+  flex: 1;
+  display: grid;
+  justify-content: center;
+  align-items: flex-start;
+  background: #ffffff;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: #181d3e;
+  box-shadow: 0 12px 24px rgb(24, 29, 62);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-raised-button {
+  color: #181d3e;
+}
+
+#signUpButton, #loginButton {
+  color: #181d3e;
+  background-color: #ffffff;
+}
+
+

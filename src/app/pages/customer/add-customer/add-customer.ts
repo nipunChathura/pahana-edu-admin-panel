@@ -34,7 +34,7 @@ import {NgIf} from '@angular/common';
 export class AddCustomer {
   customerForm: FormGroup;
   private token ;
-  private userId = 1;
+  private userId;
 
   constructor(
     private fb: FormBuilder,
@@ -49,6 +49,7 @@ export class AddCustomer {
       phoneNumber: ['', [Validators.required, Validators.pattern(/^(?:\+94|0)?7\d{8}$/)]],
     });
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   onCancel(): void {

@@ -36,7 +36,7 @@ import {UserRequest} from '../../../services/request/UserRequest';
 export class UpdateUser {
   userForm: FormGroup;
   private token;
-  private userId = 1;
+  private userId;
 
   constructor(
     private fb: FormBuilder,
@@ -55,6 +55,7 @@ export class UpdateUser {
     });
 
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   ngOnInit(): void {

@@ -4,3 +4,47 @@
 mat-toolbar button {
   margin-right: 8px;
 }
+table {
+  width: 100%;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: #3f3f3f;
+}
+
+.active-status {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive-status {
+  color: orange;
+  font-weight: bold;
+}
+
+.active-row {
+  background-color: #3c4f3d; /* light green */
+}
+
+.inactive-row {
+  background-color: #564438; /* light red */
+}
+
+table.mat-table {
+  td.mat-cell {
+    color: #333; /* darker text */
+  }
+  tr.mat-row:hover td.mat-cell {
+    color: #1976d2; /* blue text on hover */
+  }
+}
+
+table.mat-table {
+  tr.mat-row:hover {
+    background-color: #e3f2fd; /* light blue on hover */
+  }
+}

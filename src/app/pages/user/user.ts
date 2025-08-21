@@ -72,7 +72,7 @@ export class User {
   dataSource = new MatTableDataSource<UserDto>(this.users);
 
   private token;
-  private userId = 1;
+  private userId;
 
   constructor(
     private userService: UserService,
@@ -81,6 +81,7 @@ export class User {
     private snackBar: MatSnackBar,
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

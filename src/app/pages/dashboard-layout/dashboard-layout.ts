@@ -12,11 +12,24 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/route
   standalone: true,
   imports: [CommonModule, MatIcon, MatIconButton, MatListItem, MatNavList, MatSidenav, MatSidenavContainer, MatSidenavContent, MatToolbar, RouterLink, RouterLinkActive, RouterOutlet, MatIcon],
   templateUrl: './dashboard-layout.html',
-  styleUrl: './dashboard-layout.scss'
+  styleUrl: './dashboard-layout.scss',
+
 })
 export class DashboardLayout {
-  username: string = 'Nipun';
+  username: string = localStorage.getItem('username') ?? '';
+  showBookSubMenu = false;
+  showPromotionSubMenu: boolean = false;
   constructor(private router: Router) {}
+
+  toggleBookSubMenu(): void {
+    this.showBookSubMenu = !this.showBookSubMenu;
+    if (this.showBookSubMenu) this.showPromotionSubMenu = false;
+  }
+
+  togglePromotionSubMenu(): void {
+    this.showPromotionSubMenu = !this.showPromotionSubMenu;
+    if (this.showPromotionSubMenu) this.showBookSubMenu = false;
+  }
 
   onLogout() {
     // TODO: Clear any stored authentication tokens/session here

@@ -53,6 +53,42 @@ mat-sidenav {
   width: 200px;
 }
 
+.sub-menu {
+  padding-left: 32px;
+}
+
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-label {
+  margin-left: 8px;
+  display: table-caption;
+}
+
+.leading-icon {
+  margin-right: 4px;
+}
+
 .spacer {
   flex: 1 1 auto;
+}
+
+.expand-icon {
+  margin-left: auto;
+}
+
+/* Optional: increase clickable area of arrow */
+.expand-icon:hover {
+  cursor: pointer;
+}
+
+/* Prevent Angular Material inner list item layout override */
+.mat-mdc-list-item-unscoped-content,
+.mat-mdc-list-item-unscoped-content > * {
+  width: 100%;
+  display: flex;
+  align-items: center;
 }

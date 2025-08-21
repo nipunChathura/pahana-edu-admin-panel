@@ -1,0 +1,50 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+
+  .full-width {
+    grid-column: span 2;
+  }
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+mat-form-field {
+  padding: 10px;
+  margin-top: 10px;
+  width: 96%;
+}
+
+
+.image-upload-field {
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .image-preview {
+      position: relative;
+
+      .preview-img {
+        width: 300px;       // fixed width
+        height: 300px;      // fixed height
+        object-fit: cover;  // maintain aspect ratio
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+    }
+  }
+}

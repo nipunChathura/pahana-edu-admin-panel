@@ -1,0 +1,42 @@
+<mat-card class="book-details-card">
+  <!-- Toolbar with close button -->
+  <mat-toolbar color="primary" style="display: flex; justify-content: space-between; align-items: center;">
+    <span>Book Details</span>
+    <button mat-icon-button (click)="onClose()" aria-label="Close" style="color: #e50808;">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Flex container: left image, right content -->
+  <div class="book-details-container">
+    <!-- Left: Image -->
+    <div class="image-container">
+      <img [src]="imageUrl" alt="Book Image">
+    </div>
+
+    <!-- Right: Content -->
+    <div class="content-container">
+      <h2>{{ book.name }}</h2>
+      <p><strong>Author:</strong> {{ book.author }}</p>
+      <p><strong>Category:</strong> {{ book.categoryName }}</p>
+      <p><strong>Language:</strong> {{ book.language }}</p>
+      <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+      <p><strong>Publisher:</strong> {{ book.publisher }}</p>
+      <p><strong>Publish Date:</strong> {{ formattedPublishDate }}</p>
+      <p><strong>Price:</strong> {{ book.price | currency:'LKR '}}</p>
+      <p><strong>Quantity:</strong> {{ book.quantity }}</p>
+
+      <p class="description"><strong>Description:</strong> {{ book.description }}</p>
+
+      <div *ngIf="book.awardList?.length">
+        <h3>Awards:</h3>
+        <ul>
+          <li *ngFor="let award of book.awardList">
+            <strong>{{ award.awardName }}</strong>
+            <span *ngIf="award.awardDescription">- {{ award.awardDescription }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</mat-card>

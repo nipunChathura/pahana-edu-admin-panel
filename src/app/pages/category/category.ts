@@ -58,8 +58,7 @@ export class Category {
   dataSource = new MatTableDataSource<CategoryDto>(this.categories);
 
   private token;
-  private userId = 1;
-
+  private userId: string;
   constructor(
     private categoryService: CategoryService,
     private auth: Auth,
@@ -67,6 +66,7 @@ export class Category {
     private snackBar: MatSnackBar,
   ) {
     this.token = this.auth.getToken() ?? '';
+    this.userId = localStorage.getItem('userId') ?? '';
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -80,7 +80,7 @@ export class Category {
   }
 
   loadCategoryTableData() {
-    this.categoryService.getCategories(this.userId, this.token).subscribe(data => {
+    this.categoryService.getCategories(Number(this.userId), this.token).subscribe(data => {
       this.response = data;
       this.categories = this.response.categoryDetailsList;
       this.dataSource = new MatTableDataSource<CategoryDto>(this.categories);
@@ -170,7 +170,7 @@ export class Category {
     };
 
     const request: CategoryRequest = {
-      userId: this.userId,
+      userId: Number(this.userId),
       categoryId: category.categoryId,
       categoryDetail: categoryDto
     };

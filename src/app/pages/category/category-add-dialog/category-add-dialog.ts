@@ -34,7 +34,7 @@ import {CategoryDto} from '../../../services/dto/CategoryDto';
 export class CategoryAddDialog {
   categoryForm: FormGroup;
   private token ;
-  private userId = 1;
+  private userId;
 
   constructor(
     private fb: FormBuilder,
@@ -48,6 +48,7 @@ export class CategoryAddDialog {
       categoryStatus: ['ACTIVE', Validators.required],
     });
     this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
   onCancel(): void {

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {
@@ -14,166 +14,144 @@ import {MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/inp
 import {MatToolbar} from "@angular/material/toolbar";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterOutlet} from "@angular/router";
-import {CategoryDto} from '../../services/dto/CategoryDto';
-import {CategoryApiResponse} from '../../services/response/CategoryApiResponse';
-import {CategoryService} from '../../services/category';
 import {Auth} from '../../services/auth';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatPaginator} from '@angular/material/paginator';
-import {CategoryUpdateDialog} from '../category/category-update-dialog/category-update-dialog';
-import {CategoryDeleteDialog} from '../category/category-delete-dialog/category-delete-dialog';
-import {CategoryRequest} from '../../services/request/CategoryRequest';
 import {MatIcon} from '@angular/material/icon';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {AddPromotion} from './add-promotion/add-promotion';
+import {PromotionService} from '../../services/promotion.service';
+import {PromotionDto} from '../../services/dto/PromotionDto';
+import {HighlightPipe} from '../../services/highlight-pipe';
+import {DeleteBook} from '../book/delete-book/delete-book';
+import {DeletePromotion} from './delete-promotion/delete-promotion';
+import {BookRequest} from '../../services/request/BookRequest';
+import {PromotionRequest} from '../../services/request/PromotionRequest';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ViewBookDetail} from '../book/view-book-detail/view-book-detail';
+import {DetailsPromotion} from './details-promotion/details-promotion';
 
 @Component({
   selector: 'app-promotion',
   standalone: true,
-  imports: [CommonModule, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatInput, MatLabel, MatOption, MatPaginator, MatRow, MatRowDef, MatSelect, MatSuffix, MatTable, MatToolbar, ReactiveFormsModule, RouterOutlet, MatHeaderCellDef, FormsModule],
+  imports: [CommonModule, HighlightPipe, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatInput, MatLabel, MatOption, MatPaginator, MatRow, MatRowDef, MatSelect, MatSuffix, MatTable, MatToolbar, ReactiveFormsModule, RouterOutlet, MatHeaderCellDef, FormsModule],
   templateUrl: './promotion.html',
   styleUrl: './promotion.scss'
 })
-export class Promotion {
-  allColumns: string[] = ['action', 'id', 'name', 'status'];
-
-  categories!: CategoryDto[];
-  response!: CategoryApiResponse;
+export class Promotion implements OnInit {
+  allColumns: string[] = ['action', 'id', 'name', 'startDate', 'endDate', 'type', 'price', 'priority', 'status'];
+  dataSource: MatTableDataSource<PromotionDto> = new MatTableDataSource();
   searchText: string = '';
   selectedStatus: string = '';
 
-  dataSource = new MatTableDataSource<CategoryDto>(this.categories);
-
-  private token;
-  private userId = 1;
-
-  constructor(
-    private categoryService: CategoryService,
-    private auth: Auth,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-  ) {
-    this.token = this.auth.getToken() ?? '';
-  }
+  private token: string;
+  private userId: number;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  ngOnInit() {
-    this.loadCategoryTableData();
+  constructor(
+    private promotionService: PromotionService,
+    private dialog: MatDialog,
+    private auth: Auth,
+  private snackBar: MatSnackBar,
+  ) {
+    this.token = this.auth.getToken() ?? '';
+    this.userId = Number(localStorage.getItem('userId') ?? '');
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  ngOnInit(): void {
+    this.loadPromotions();
   }
 
-  loadCategoryTableData() {
-    this.categoryService.getCategories(this.userId, this.token).subscribe(data => {
-      this.response = data;
-      this.categories = this.response.categoryDetailsList;
-      this.dataSource = new MatTableDataSource<CategoryDto>(this.categories);
+  loadPromotions(): void {
+    this.promotionService.getPromotions(this.userId, true, this.token).subscribe((res: any) => {
+      if (res.status === 'success') {
+        this.dataSource = new MatTableDataSource(res.promotionDtoList);
+        this.dataSource.paginator = this.paginator;
 
-      // Combined filter for search and status
-      this.dataSource.filterPredicate = (data: CategoryDto, filter: string) => {
-        const filterObj = JSON.parse(filter);
-        const matchesText = (data.categoryName ?? '').toLowerCase().includes(filterObj.searchText);
-        const matchesStatus = filterObj.selectedStatus === '' || data.categoryStatus === filterObj.selectedStatus;
-        return matchesText && matchesStatus;
-      };
+        // Only filter promotionName
+        this.dataSource.filterPredicate = (data: PromotionDto, filter: string) => {
+          const searchText = (filter ?? '').trim().toLowerCase();
+          const matchesSearch = (data.promotionName ?? '').toLowerCase().includes(searchText);
+          const matchesStatus = this.selectedStatus ? data.promotionStatus === this.selectedStatus : true;
+          return matchesSearch && matchesStatus;
+        };
 
-      this.dataSource.paginator = this.paginator;
-      this.applyCombinedFilter(); // Apply filter after loading data
+        this.applyFilterOrStatus();
+      }
     });
   }
 
-  applyFilter(event: Event) {
-    this.searchText = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.applyCombinedFilter();
+  applyFilter(event: Event): void {
+    this.searchText = (event.target as HTMLInputElement).value;
+    this.applyFilterOrStatus();
   }
 
-  clearSearch() {
+  applyStatusFilter(): void {
+    this.applyFilterOrStatus();
+  }
+
+  clearSearch(): void {
     this.searchText = '';
-    this.applyCombinedFilter();
+    this.applyFilterOrStatus();
   }
 
-  applyStatusFilter() {
-    this.applyCombinedFilter();
-  }
-
-  applyCombinedFilter() {
-    const filterValue = {
-      searchText: this.searchText.toLowerCase(),
-      selectedStatus: this.selectedStatus
-    };
-    this.dataSource.filter = JSON.stringify(filterValue);
-
+  private applyFilterOrStatus(): void {
+    this.dataSource.filter = this.searchText.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+    this.dataSource._updateChangeSubscription();
   }
 
-  onAddCategory(): void {
-    const dialogRef = this.dialog.open(AddPromotion, {
-      width: '800px', height: '600px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadCategoryTableData();
-      }
-    });
+  onAddPromotion(): void {
+    this.dialog.open(AddPromotion, { width: '400px' });
   }
 
-  onEdit(category: any): void {
-    const dialogRef = this.dialog.open(CategoryUpdateDialog, {
-      width: '400px',
-      data: category
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadCategoryTableData();
-      }
+  onView(promotion: PromotionDto): void {
+    const dialogRef = this.dialog.open(DetailsPromotion, {
+      maxWidth: '90vw',
+      minWidth: '300px',
+      width: 'auto',
+      height: 'auto',
+      data: { promotion: promotion },
+      autoFocus: false
     });
   }
 
-  onDelete(element: any): void {
-    const dialogRef = this.dialog.open(CategoryDeleteDialog, {
+  onDelete(promotion: PromotionDto): void {
+    console.log(promotion);
+    const dialogRef = this.dialog.open(DeletePromotion, {
       width: '350px',
-      data: { category: element }
+      data: promotion
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.deleteCategory(element);
+        this.deletePromotion(promotion);
       }
     });
   }
 
-  deleteCategory(category: any): void {
-    const categoryDto: CategoryDto = {
-      categoryId: category.categoryId,
-      categoryName: category.categoryName,
-      categoryStatus: category.categoryStatus
+  private deletePromotion(promotion: PromotionDto) {
+    const request: PromotionRequest = {
+      promotionId: promotion.promotionId,
+      bookId: null,
+      requestBookDetails:false,
+      promotionDto: promotion
     };
 
-    const request: CategoryRequest = {
-      userId: this.userId,
-      categoryId: category.categoryId,
-      categoryDetail: categoryDto
-    };
-
-    this.categoryService.deleteCategory(request, this.token).subscribe({
+    this.promotionService.deletePromotion(request, this.token).subscribe({
       next: (response) => {
         if (response.status === 'success') {
-          this.snackBar.open('Category delete successfully', 'Close', { duration: 3000, panelClass: ['snack-info'], horizontalPosition: 'center', verticalPosition: 'top' });
-          this.loadCategoryTableData();
+          this.snackBar.open('Promotion delete successfully', 'Close', { duration: 3000, panelClass: ['snack-info'], horizontalPosition: 'center', verticalPosition: 'top' });
+          this.loadPromotions();
         } else {
-          this.snackBar.open('Category delete Error ' + response.responseMessage, 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+          this.snackBar.open('Promotion delete Error ' + response.responseMessage, 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
         }
       },
       error: (err) => {
-        this.snackBar.open('Failed to delete category', 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
+        this.snackBar.open('Failed to delete promotion', 'Close', { duration: 3000, panelClass: ['snack-error'], horizontalPosition: 'center', verticalPosition: 'top' });
         console.error('Save error:', err);
       }
     });
